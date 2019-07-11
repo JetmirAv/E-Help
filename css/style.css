@@ -1,0 +1,25 @@
+.navbar .nav-link {
+    font-size: 14px;
+    text-transform: uppercase;
+    padding: 0.2rem 1rem !important;
+}
+
+.navbar .nav-item.active{
+    border-bottom: #666 0.5px solid;
+}
+
+.carousel-item {
+    height: 550px
+}
+.carousel-image-1 {
+    background-image:   linear-gradient( rgba(0,0,0,0.5), rgba(0, 0, 0, 0.5) ), url('../images/image1.jpg'); 
+    background-size: cover;
+}
+.carousel-image-2 {
+    background-image:   linear-gradient( rgba(0,0,0,0.5), rgba(0, 0, 0, 0.5) ), url('../images/image2.jpg'); 
+    background-size: cover;
+}
+.carousel-image-3 {
+    background-image:   linear-gradient( rgba(0,0,0,0.5), rgba(0, 0, 0, 0.5) ), url('../images/image3.jpg'); 
+    background-size: cover;
+}
