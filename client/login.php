@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 
+<?php include_once('./components/head.php') ?>
 
-<head>
+
+<!-- <head>
 
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -13,9 +15,10 @@
 
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script type="text/javascript" src="javascript/jQuery.js"></script>
+    <script type="text/javascript" src="javascript/constants.js"></script>
 
-
-</head>
+</head> -->
 
 <body>
   <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
@@ -57,7 +60,9 @@
         <div class="tab-pane fade show active" id="pills-signin" role="tabpanel" aria-labelledby="pills-signin-tab">
           <div class="col-sm-12 border border-dark shadow rounded pt-2">
             <div class="text-center"><img src="https://placehold.it/80x80" class="rounded-circle border p-1"></div>
-            <form method="post" id="singninFrom" action="http://localhost:8000/login">
+
+            <!-- Sign in -->
+            <form  id="singninForm" action="#" >
               <div class="form-group">
                 <label class="font-weight-bold">Email <span class="text-danger">*</span></label>
                 <input type="email" name="email" id="email" class="form-control" placeholder="Enter valid email"
@@ -73,12 +78,13 @@
                   <div class="col">
                     <label><input type="checkbox" name="condition" id="condition"> Remember me.</label>
                   </div>
-                  <div class="col text-right"> <a href="javascript:;" data-toggle="modal"
-                      data-target="#forgotPass">Forgot Password?</a> </div>
+                  <div class="col text-right">
+                     <a href="javascript:;" data-toggle="modal" data-target="#forgotPass">Forgot Password?</a> 
+                    </div>
                 </div>
               </div>
               <div class="form-group">
-                <input type="submit" name="submit" value="Sign In" class="btn btn-block btn-dark">
+                <input id="singninButton"  type="submit" name="submit" value="Sign In" class="btn btn-block btn-dark">
               </div>
             </form>
           </div>
@@ -86,7 +92,9 @@
         <div class="tab-pane fade" id="pills-signup" role="tabpanel" aria-labelledby="pills-signup-tab">
           <div class="col-sm-12 border border-dark shadow rounded pt-2">
             <div class="text-center"><img src="https://placehold.it/80x80" class="rounded-circle border p-1"></div>
-            <form method="post" id="singnupFrom" action="http://localhost:8000/api/auth/register">
+
+            <!-- Sign Up -->
+            <form method="post" id="singnupFrom" >
               <div class="form-group">
                 <label class="font-weight-bold">Email <span class="text-danger">*</span></label>
                 <input type="email" name="signupemail" id="signupemail" class="form-control"
@@ -169,14 +177,41 @@
       </div>
     </div>
   </footer>
-  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
-  </script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
     integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
   </script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
     integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
+  </script>
+  <script>
+        $('#singninForm').submit(function(e){
+          e.preventDefault()
+          console.log("e")
+            var email = $('#email').val()
+            var password = $('#password').val()
+            console.log(baseUrl)
+            $.ajax({
+            url: baseUrl + 'api/auth/login',
+            type: 'POST',
+            beforeSend: function(request) {
+              request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+              request.setRequestHeader("Accept", "application/json");
+            },
+            data: {
+                email: email,
+                password: password
+            },
+            success: function (data) {
+              if (data) {
+                  console.log("data")
+                  console.log(data)
+                  console.log("data")
+              } else {
+                console.log("Error")
+              }
+            }
+          });
+        })
   </script>
 </body>
 
