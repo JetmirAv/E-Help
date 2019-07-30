@@ -57,7 +57,7 @@
         <div class="tab-pane fade show active" id="pills-signin" role="tabpanel" aria-labelledby="pills-signin-tab">
           <div class="col-sm-12 border border-dark shadow rounded pt-2">
             <div class="text-center"><img src="https://placehold.it/80x80" class="rounded-circle border p-1"></div>
-            <form method="post" id="singninFrom">
+            <form method="post" id="singninFrom" action="http://localhost:8000/login">
               <div class="form-group">
                 <label class="font-weight-bold">Email <span class="text-danger">*</span></label>
                 <input type="email" name="email" id="email" class="form-control" placeholder="Enter valid email"
@@ -86,7 +86,7 @@
         <div class="tab-pane fade" id="pills-signup" role="tabpanel" aria-labelledby="pills-signup-tab">
           <div class="col-sm-12 border border-dark shadow rounded pt-2">
             <div class="text-center"><img src="https://placehold.it/80x80" class="rounded-circle border p-1"></div>
-            <form method="post" id="singnupFrom">
+            <form method="post" id="singnupFrom" action="http://localhost:8000/api/auth/register">
               <div class="form-group">
                 <label class="font-weight-bold">Email <span class="text-danger">*</span></label>
                 <input type="email" name="signupemail" id="signupemail" class="form-control"
@@ -160,24 +160,24 @@
     </div>
   </div>
   <footer id="main-footer" class="text-center p-4 mt-5">
-      <div class="container">
-          <div class="row">
-              <div class="col">
-                  <p>Copyright &copy;
-                      <span id="year"></span> E-Help</p>
-              </div>
-          </div>
+    <div class="container">
+      <div class="row">
+        <div class="col">
+          <p>Copyright &copy;
+            <span id="year"></span> E-Help</p>
+        </div>
       </div>
+    </div>
   </footer>
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-    crossorigin="anonymous"></script>
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
+  </script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
-    crossorigin="anonymous"></script>
+    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
+  </script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-    crossorigin="anonymous"></script>
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
+  </script>
 </body>
 
 </html>
