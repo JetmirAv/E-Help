@@ -4,57 +4,15 @@
 <?php include_once('./components/head.php') ?>
 
 
-<!-- <head>
-
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="">
-  <meta name="author" content="">
-  <title>Blog Post - Start Bootstrap Template</title>
-  <link rel="stylesheet" href="css/style.css">
-
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <script type="text/javascript" src="javascript/jQuery.js"></script>
-    <script type="text/javascript" src="javascript/constants.js"></script>
-
-</head> -->
 
 <body>
-  <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
-    <div class="container">
-      <a href="index.html" class="navbar-brand">E-Help</a>
-      <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarCollapse">
-        <ul class="navbar-nav ml-auto">
-          <li class="nav-item">
-            <a href="index.html" class="nav-link">Home</a>
-          </li>
-          <li class="nav-item">
-            <a href="tour.html" class="nav-link">Tour</a>
-          </li>
-          <li class="nav-item">
-            <a href="forum.html" class="nav-link">Forum</a>
-          </li>
-          <li class="nav-item active">
-            <a href="account.html" class="nav-link ">My Account</a>
-          </li>
-          <li class="nav-item">
-            <a href="about.html" class="nav-link">About</a>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
+  <?php include_once('./components/nav.php') ?>
+
   <div class="container mt-2 mb-4">
     <div class="col-sm-8 ml-auto mr-auto">
       <ul class="nav nav-pills nav-fill mb-1" id="pills-tab" role="tablist">
-        <li class="nav-item"> <a class="nav-link active" id="pills-signin-tab" data-toggle="pill" href="#pills-signin"
-            role="tab" aria-controls="pills-signin" aria-selected="true">Sign In</a> </li>
-        <li class="nav-item"> <a class="nav-link" id="pills-signup-tab" data-toggle="pill" href="#pills-signup"
-            role="tab" aria-controls="pills-signup" aria-selected="false">Sign Up</a> </li>
+        <li class="nav-item"> <a class="nav-link active" onclick="changeView" id="pills-signin-tab" data-toggle="pill" href="#pills-signin" role="tab" aria-controls="pills-signin" aria-selected="true">Sign In</a> </li>
+        <li class="nav-item"> <a class="nav-link" onclick="changeView" id="pills-signup-tab" data-toggle="pill" href="#pills-signup" role="tab" aria-controls="pills-signup" aria-selected="false">Sign Up</a> </li>
       </ul>
       <div class="tab-content" id="pills-tabContent">
         <div class="tab-pane fade show active" id="pills-signin" role="tabpanel" aria-labelledby="pills-signin-tab">
@@ -62,16 +20,14 @@
             <div class="text-center"><img src="https://placehold.it/80x80" class="rounded-circle border p-1"></div>
 
             <!-- Sign in -->
-            <form  id="singninForm" action="#" >
+            <form id="singninForm" action="#">
               <div class="form-group">
                 <label class="font-weight-bold">Email <span class="text-danger">*</span></label>
-                <input type="email" name="email" id="email" class="form-control" placeholder="Enter valid email"
-                  required>
+                <input type="email" name="email" id="email" class="form-control" placeholder="Enter valid email" required>
               </div>
               <div class="form-group">
                 <label class="font-weight-bold">Password <span class="text-danger">*</span></label>
-                <input type="password" name="password" id="password" class="form-control" placeholder="***********"
-                  required>
+                <input type="password" name="password" id="password" class="form-control" placeholder="***********" required>
               </div>
               <div class="form-group">
                 <div class="row">
@@ -79,12 +35,12 @@
                     <label><input type="checkbox" name="condition" id="condition"> Remember me.</label>
                   </div>
                   <div class="col text-right">
-                     <a href="javascript:;" data-toggle="modal" data-target="#forgotPass">Forgot Password?</a> 
-                    </div>
+                    <a href="javascript:;" data-toggle="modal" data-target="#forgotPass">Forgot Password?</a>
+                  </div>
                 </div>
               </div>
               <div class="form-group">
-                <input id="singninButton"  type="submit" name="submit" value="Sign In" class="btn btn-block btn-dark">
+                <input id="singninButton" type="submit" name="submit" value="Sign In" class="btn btn-block btn-dark">
               </div>
             </form>
           </div>
@@ -94,40 +50,30 @@
             <div class="text-center"><img src="https://placehold.it/80x80" class="rounded-circle border p-1"></div>
 
             <!-- Sign Up -->
-            <form method="post" id="singnupFrom" >
+            <form method="post" id="singnupFrom">
               <div class="form-group">
                 <label class="font-weight-bold">Email <span class="text-danger">*</span></label>
-                <input type="email" name="signupemail" id="signupemail" class="form-control"
-                  placeholder="Enter valid email" required>
+                <input type="email" name="signupemail" id="signupemail" class="form-control" placeholder="Enter valid email" required>
               </div>
               <div class="form-group">
                 <label class="font-weight-bold">User Name <span class="text-danger">*</span></label>
-                <input type="text" name="signupusername" id="signupusername" class="form-control"
-                  placeholder="Choose your user name" required>
+                <input type="text" name="signupusername" id="signupusername" class="form-control" placeholder="Choose your user name" required>
                 <div class="text-danger"><em>This will be your login name!</em></div>
               </div>
               <div class="form-group">
                 <label class="font-weight-bold">Phone #</label>
-                <input type="text" name="signupphone" id="signupphone" class="form-control"
-                  placeholder="(000)-(0000000)">
+                <input type="text" name="signupphone" id="signupphone" class="form-control" placeholder="(000)-(0000000)">
               </div>
               <div class="form-group">
                 <label class="font-weight-bold">Password <span class="text-danger">*</span></label>
-                <input type="password" name="signuppassword" id="signuppassword" class="form-control"
-                  placeholder="***********" pattern="^\S{6,}$"
-                  onchange="this.setCustomValidity(this.validity.patternMismatch ? 'Must have at least 6 characters' : ''); if(this.checkValidity()) form.password_two.pattern = this.value;"
-                  required>
+                <input type="password" name="signuppassword" id="signuppassword" class="form-control" placeholder="***********" pattern="^\S{6,}$" onchange="this.setCustomValidity(this.validity.patternMismatch ? 'Must have at least 6 characters' : ''); if(this.checkValidity()) form.password_two.pattern = this.value;" required>
               </div>
               <div class="form-group">
                 <label class="font-weight-bold">Confirm Password <span class="text-danger">*</span></label>
-                <input type="password" name="signupcpassword" id="signupcpassword" class="form-control"
-                  pattern="^\S{6,}$"
-                  onchange="this.setCustomValidity(this.validity.patternMismatch ? 'Please enter the same Password as above' : '');"
-                  placeholder="***********" required>
+                <input type="password" name="signupcpassword" id="signupcpassword" class="form-control" pattern="^\S{6,}$" onchange="this.setCustomValidity(this.validity.patternMismatch ? 'Please enter the same Password as above' : '');" placeholder="***********" required>
               </div>
               <div class="form-group">
-                <label><input type="checkbox" name="signupcondition" id="signupcondition" required> I agree with the <a
-                    href="javascript:;">Terms &amp; Conditions</a> for Registration.</label>
+                <label><input type="checkbox" name="signupcondition" id="signupcondition" required> I agree with the <a href="javascript:;">Terms &amp; Conditions</a> for Registration.</label>
               </div>
               <div class="form-group">
                 <input type="submit" name="signupsubmit" value="Sign Up" class="btn btn-block btn-dark">
@@ -145,14 +91,12 @@
           <div class="modal-content">
             <div class="modal-header">
               <h5 class="modal-title">Forgot Password</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span
-                  aria-hidden="true">&times;</span> </button>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
             </div>
             <div class="modal-body">
               <div class="form-group">
                 <label>Email <span class="text-danger">*</span></label>
-                <input type="email" name="forgotemail" id="forgotemail" class="form-control"
-                  placeholder="Enter your valid email..." required>
+                <input type="email" name="forgotemail" id="forgotemail" class="form-control" placeholder="Enter your valid email..." required>
               </div>
               <div class="form-group">
               </div>
@@ -177,41 +121,46 @@
       </div>
     </div>
   </footer>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
   </script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
   </script>
   <script>
-        $('#singninForm').submit(function(e){
-          e.preventDefault()
-          console.log("e")
-            var email = $('#email').val()
-            var password = $('#password').val()
-            console.log(baseUrl)
-            $.ajax({
-            url: baseUrl + 'api/auth/login',
-            type: 'POST',
-            beforeSend: function(request) {
-              request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-              request.setRequestHeader("Accept", "application/json");
-            },
-            data: {
-                email: email,
-                password: password
-            },
-            success: function (data) {
-              if (data) {
-                  console.log("data")
-                  console.log(data)
-                  console.log("data")
-              } else {
-                console.log("Error")
-              }
-            }
-          });
-        })
+    $('#singninForm').submit(function(e) {
+      e.preventDefault()
+      console.log("e")
+      var email = $('#email').val()
+      var password = $('#password').val()
+      console.log(baseUrl)
+      $.ajax({
+        url: baseUrl + 'api/auth/login',
+        type: 'POST',
+        beforeSend: function(request) {
+          request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+          request.setRequestHeader("Accept", "application/json");
+        },
+        data: {
+          email: email,
+          password: password
+        },
+        success: function(data) {
+          if (data) {
+            console.log("data")
+            console.log(data)
+            console.log("data")
+          } else {
+            console.log("Error")
+          }
+        }
+      });
+    })
+
+    function changeView() {
+      let sigInModal = document.getElementById('pills-signin')
+      let sigUpModal = document.getElementById('pills-signup')
+      $('#pills-signin').toggleClass('active')
+      $('#pills-signup').toggleClass('active')
+    }
   </script>
 </body>
 

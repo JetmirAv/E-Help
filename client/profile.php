@@ -23,33 +23,8 @@
 
 
 <body>
-    <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
-        <div class="container">
-            <a href="index.html" class="navbar-brand">E-Help</a>
-            <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarCollapse">
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item">
-                        <a href="index.html" class="nav-link">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="tour.html" class="nav-link">Tour</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="forum.html" class="nav-link">Forum</a>
-                    </li>
-                    <li class="nav-item active">
-                        <a href="account.html" class="nav-link ">My Account</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="about.html" class="nav-link">About</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+    <?php include_once('./components/nav.php') ?>
+
     <div class="container">
         <div class="row m-y-2 align-middle">
             <!-- edit form column -->

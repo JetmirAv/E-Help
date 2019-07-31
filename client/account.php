@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
+<?php include_once('./components/head.php') ?>
 
-<head>
+<!-- <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=1440, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -9,36 +10,11 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-</head>
+</head> -->
 
 <body class="bg-light">
-    <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
-        <div class="container">
-            <a href="index.html" class="navbar-brand">E-Help</a>
-            <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarCollapse">
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item">
-                        <a href="index.html" class="nav-link">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="tour.html" class="nav-link">Tour</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="forum.html" class="nav-link">Forum</a>
-                    </li>
-                    <li class="nav-item active">
-                        <a href="account.html" class="nav-link ">My Account</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="about.html" class="nav-link">About</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+    <?php include_once('./components/nav.php') ?>
+
 
     
     
