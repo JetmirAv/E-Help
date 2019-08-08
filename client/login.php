@@ -3,7 +3,12 @@
 
 <?php include_once('./components/head.php') ?>
 
+<?php
 
+  if(isset(($_SESSION['token']))){
+    header("Location: /profile");
+  }
+?>
 
 <body>
   <?php include_once('./components/nav.php') ?>
@@ -15,9 +20,9 @@
         <li class="nav-item"> <a class="nav-link" onclick="changeView" id="pills-signup-tab" data-toggle="pill" href="#pills-signup" role="tab" aria-controls="pills-signup" aria-selected="false">Sign Up</a> </li>
       </ul>
       <div class="tab-content" id="pills-tabContent">
-        <div class="tab-pane fade show active" id="pills-signin" role="tabpanel" aria-labelledby="pills-signin-tab">
+        <div class="tab-pane fade show active" id="pills-signin" role="tabpanel" aria-labelledby="pills-signin-tab" style="margin-bottom: 200px">
           <div class="col-sm-12 border border-dark shadow rounded pt-2">
-            <div class="text-center"><img src="https://placehold.it/80x80" class="rounded-circle border p-1"></div>
+            <div class="text-center"><img width="80px" height="80px" src="images/profile.png" class="rounded-circle border p-1"></div>
 
             <!-- Sign in -->
             <form id="singninForm" action="#">
@@ -47,33 +52,85 @@
         </div>
         <div class="tab-pane fade" id="pills-signup" role="tabpanel" aria-labelledby="pills-signup-tab">
           <div class="col-sm-12 border border-dark shadow rounded pt-2">
-            <div class="text-center"><img src="https://placehold.it/80x80" class="rounded-circle border p-1"></div>
+
 
             <!-- Sign Up -->
-            <form method="post" id="singnupFrom">
-              <div class="form-group">
-                <label class="font-weight-bold">Email <span class="text-danger">*</span></label>
-                <input type="email" name="signupemail" id="signupemail" class="form-control" placeholder="Enter valid email" required>
+            <form action="#" id="singnupFrom">
+              <div class="text-center" style="margin-bottom: 20px">
+                <label class="font-weight-bold">Profile Picture <span class="text-danger">*</span></label><br />
+                <img id="profileImg" onclick="profileUpload()" width="80px" height="80px" src="images/profile.png" class="rounded-circle border p-1">
+                <input id="profileInput" type="file" style="position: fixed; top: -200px">
               </div>
               <div class="form-group">
-                <label class="font-weight-bold">User Name <span class="text-danger">*</span></label>
-                <input type="text" name="signupusername" id="signupusername" class="form-control" placeholder="Choose your user name" required>
-                <div class="text-danger"><em>This will be your login name!</em></div>
+                <div class="row">
+                  <div class="col">
+                    <label class="font-weight-bold">First Name <span class="text-danger">*</span></label>
+                    <input type="text" name="signupFirstName" id="signupFirstName" class="form-control" placeholder="First Name" required>
+                  </div>
+                  <div class="col">
+                    <label class="font-weight-bold">First Name <span class="text-danger">*</span></label>
+                    <input type="text" name="signupLastName" id="signupLastName" class="form-control" placeholder="Last Name" required>
+                  </div>
+                </div>
               </div>
               <div class="form-group">
-                <label class="font-weight-bold">Phone #</label>
-                <input type="text" name="signupphone" id="signupphone" class="form-control" placeholder="(000)-(0000000)">
+                <div class="row">
+                  <div class="col-4">
+                    <label for="signupPosition">Position</label>
+                    <select id="signupPosition" name="signupPosition" class="form-control">
+                      <option value="1" selected>Patient</option>
+                      <option value="2">Doctor</option>
+                    </select>
+                  </div>
+                  <div class="col">
+                    <label class="font-weight-bold">Email <span class="text-danger">*</span></label>
+                    <input type="email" name="signupEmail" id="signupEmail" class="form-control" placeholder="Enter valid email" required>
+                  </div>
+                </div>
               </div>
               <div class="form-group">
-                <label class="font-weight-bold">Password <span class="text-danger">*</span></label>
-                <input type="password" name="signuppassword" id="signuppassword" class="form-control" placeholder="***********" pattern="^\S{6,}$" onchange="this.setCustomValidity(this.validity.patternMismatch ? 'Must have at least 6 characters' : ''); if(this.checkValidity()) form.password_two.pattern = this.value;" required>
+                <div class="row">
+                  <div class="col">
+                    <label class="font-weight-bold">Password <span class="text-danger">*</span></label>
+                    <input type="password" name="signupPassword" id="signupPassword" class="form-control" placeholder="***********" pattern="^\S{6,}$" onchange="this.setCustomValidity(this.validity.patternMismatch ? 'Must have at least 6 characters' : ''); if(this.checkValidity()) form.password_two.pattern = this.value;" required>
+                  </div>
+                  <div class="col">
+                    <label class="font-weight-bold">Confirm Password <span class="text-danger">*</span></label>
+                    <input type="password" name="signupCPassword" id="signupCPassword" class="form-control" pattern="^\S{6,}$" onchange="this.setCustomValidity(this.validity.patternMismatch ? 'Please enter the same Password as above' : '');" placeholder="***********" required>
+                  </div>
+                </div>
               </div>
               <div class="form-group">
-                <label class="font-weight-bold">Confirm Password <span class="text-danger">*</span></label>
-                <input type="password" name="signupcpassword" id="signupcpassword" class="form-control" pattern="^\S{6,}$" onchange="this.setCustomValidity(this.validity.patternMismatch ? 'Please enter the same Password as above' : '');" placeholder="***********" required>
+                <div class="row">
+                  <div class="col">
+                    <label class="font-weight-bold">Address</label>
+                    <input type="text" name="signupAddress" id="signupAddress" class="form-control" placeholder="Address">
+                  </div>
+                  <div class="col">
+                    <label class="font-weight-bold">City</label>
+                    <input type="text" name="signupCity" id="signupCity" class="form-control" placeholder="City">
+                  </div>
+                  <div class="col-4">
+                    <label class="font-weight-bold">Birthdate</label>
+                    <input type="date" name="signupBirthdate" id="signupBirthday" class="form-control" placeholder="City">
+                  </div>
+                </div>
               </div>
               <div class="form-group">
-                <label><input type="checkbox" name="signupcondition" id="signupcondition" required> I agree with the <a href="javascript:;">Terms &amp; Conditions</a> for Registration.</label>
+                <div class="row">
+                  <div class="col-5">
+                    <label class="font-weight-bold">State</label>
+                    <input type="text" name="signupState" id="signupState" class="form-control" placeholder="State">
+                  </div>
+                  <div class="col-2">
+                    <label class="font-weight-bold">Postal</label>
+                    <input type="text" name="signupPostal" id="signupPostal" class="form-control" placeholder="Postal">
+                  </div>
+                  <div class="col">
+                    <label class="font-weight-bold">Phone</label>
+                    <input type="text" name="signupPhone" id="signupPhone" class="form-control" placeholder="Phone">
+                  </div>
+                </div>
               </div>
               <div class="form-group">
                 <input type="submit" name="signupsubmit" value="Sign Up" class="btn btn-block btn-dark">
@@ -111,29 +168,16 @@
       </div>
     </div>
   </div>
-  <footer id="main-footer" class="text-center p-4 mt-5">
-    <div class="container">
-      <div class="row">
-        <div class="col">
-          <p>Copyright &copy;
-            <span id="year"></span> E-Help</p>
-        </div>
-      </div>
-    </div>
-  </footer>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
-  </script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
-  </script>
+  <?php include_once('./components/footer.php') ?>
+
+  <!-- <script type="text/javascript" src="javascript/auth/login.js"></script>   -->
   <script>
     $('#singninForm').submit(function(e) {
       e.preventDefault()
-      console.log("e")
       var email = $('#email').val()
       var password = $('#password').val()
-      console.log(baseUrl)
       $.ajax({
-        url: baseUrl + 'api/auth/login',
+        url: 'http://127.0.0.1:8000/' + 'api/auth/login',
         type: 'POST',
         beforeSend: function(request) {
           request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -143,17 +187,81 @@
           email: email,
           password: password
         },
-        success: function(data) {
-          if (data) {
-            console.log("data")
-            console.log(data)
-            console.log("data")
-          } else {
-            console.log("Error")
-          }
+        success: function(response) {
+          $.post('helpers/authorization.php', {
+            token: response
+          }, (e) => {
+            if (e)
+              window.location.href = "/";
+          })
+        },
+        error: (response) => {
+          console.log(response)
+
         }
       });
     })
+
+    $('#singnupFrom').submit(function(e) {
+      e.preventDefault()
+      let formInput = {
+        email: $('#signupEmail').val(),
+        state: $('#signupState').val(),
+        postal: $('#signupPostal').val(),
+        phone_number: $('#signupPhone').val(),
+        name: $('#signupFirstName').val(),
+        surname: $('#signupLastName').val(),
+        address: $('#signupAddress').val(),
+        city: $('#signupCity').val(),
+        pos: $('#signupPosition').val(),
+        password: $('#signupPassword').val(),
+        c_password: $('#signupCPassword').val(),
+        birthday: $('#signupBirthday').val()
+      }
+
+
+      $.ajax({
+        url: 'http://127.0.0.1:8000/' + 'api/auth/register',
+        type: 'POST',
+        beforeSend: function(request) {
+          request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+          request.setRequestHeader("Accept", "application/json");
+        },
+        data: formInput,
+        success: function(response) {
+          $.post('helpers/authorization.php', {
+            token: response
+          }, (e) => {
+            if (e)
+              window.location.href = "/";
+          })
+        },
+        error: (response) => {
+          console.log(response)
+
+        }
+      });
+    })
+
+    function profileUpload() {
+      document.getElementById('profileInput').click()
+    }
+
+    function readURL(input) {
+      if (input.files && input.files[0]) {
+        var reader = new FileReader();
+
+        reader.onload = function(e) {
+          $('#profileImg').attr('src', e.target.result);
+        }
+
+        reader.readAsDataURL(input.files[0]);
+      }
+    }
+
+    $("#profileInput").change(function() {
+      readURL(this);
+    });
 
     function changeView() {
       let sigInModal = document.getElementById('pills-signin')

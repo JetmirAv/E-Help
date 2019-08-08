@@ -21,6 +21,7 @@ class User extends Authenticatable implements JWTSubject
         'name',
         'surname',
         'email',
+        'img',
         'password',
         'birthday',
         'address',
@@ -70,9 +71,14 @@ class User extends Authenticatable implements JWTSubject
         return $this->belongsToMany('App\Models\User', 'doctor_patients', 'patient', 'doctor')->withPivot('id');
     }
 
+
     public function disease(){
-        return $this->hasMany( Disease , 'doctor_patients', 'patient', 'doctor')->withPivot('id');
+        return $this->belongsToMany('App\Models\Diseases', 'patient_diseases', 'patient', 'disease')->withPivot('id');
     }
+
+    // public function disease(){
+    //     return $this->hasMany( Disease , 'doctor_patients', 'patient', 'doctor')->withPivot('id');
+    // }
 
     public function chats(){
         return $this->hasMany('App\Models\Chat', 'sender');
