@@ -15,9 +15,11 @@ foreach ($contacts as $cont) {
         $lastContact = $cont;
 }
 
-$otherContacts = array_filter($contacts, function($e) use ($cont){
-    return $e !== $cont;
-});
+$last_chat = end($chats);
+// $otherContacts = array_filter($contacts, function($e) use ($cont){
+//     return $e !== $cont;
+// });
+
 
 
 require('chat.php');

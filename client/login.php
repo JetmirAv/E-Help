@@ -5,9 +5,9 @@
 
 <?php
 
-  if(isset(($_SESSION['token']))){
-    header("Location: /profile");
-  }
+if (isset(($_SESSION['token']))) {
+  header("Location: /profile");
+}
 ?>
 
 <body>
@@ -174,6 +174,7 @@
   <script>
     $('#singninForm').submit(function(e) {
       e.preventDefault()
+      console.log("po")
       var email = $('#email').val()
       var password = $('#password').val()
       $.ajax({
@@ -188,11 +189,15 @@
           password: password
         },
         success: function(response) {
+          console.log(response);
+
           $.post('helpers/authorization.php', {
             token: response
           }, (e) => {
-            if (e)
-              window.location.href = "/";
+            console.log(e);
+
+            // if (e)
+            // window.location.href = "/";
           })
         },
         error: (response) => {

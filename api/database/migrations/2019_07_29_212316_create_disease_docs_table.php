@@ -13,10 +13,11 @@ class CreateDiseaseDocsTable extends Migration
      */
     public function up()
     {
-        Schema::create('disease_docs', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->timestamps();
-        });
+        if (!Schema::hasTable('disease_docs'))
+            Schema::create('disease_docs', function (Blueprint $table) {
+                $table->bigIncrements('id');
+                $table->timestamps();
+            });
     }
 
     /**

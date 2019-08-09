@@ -13,12 +13,13 @@ class CreateDiseasesTable extends Migration
      */
     public function up()
     {
-        Schema::create('diseases', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->string("name")->unique()->index();
-            $table->text('description');
-            $table->timestamps();
-        });
+        if (!Schema::hasTable('diseases'))
+            Schema::create('diseases', function (Blueprint $table) {
+                $table->bigIncrements('id');
+                $table->string("name")->unique()->index();
+                $table->text('description');
+                $table->timestamps();
+            });
     }
 
     /**

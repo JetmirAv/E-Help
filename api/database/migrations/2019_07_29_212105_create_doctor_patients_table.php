@@ -13,24 +13,25 @@ class CreateDoctorPatientsTable extends Migration
      */
     public function up()
     {
-        Schema::create('doctor_patients', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->bigInteger('doctor')->unsigned()->index()->nullable();
-            $table->bigInteger('patient')->unsigned()->index()->nullable();
-            $table->timestamps();
+        if (!Schema::hasTable('users'))
+            Schema::create('doctor_patients', function (Blueprint $table) {
+                $table->bigIncrements('id');
+                $table->bigInteger('doctor')->unsigned()->index()->nullable();
+                $table->bigInteger('patient')->unsigned()->index()->nullable();
+                $table->timestamps();
 
-            $table->foreign('doctor')
-                ->references('id')
-                ->on('users')
-                ->onDelete('set null')
-                ->onUpdate('cascade');
+                $table->foreign('doctor')
+                    ->references('id')
+                    ->on('users')
+                    ->onDelete('set null')
+                    ->onUpdate('cascade');
 
-            $table->foreign('patient')
-                ->references('id')
-                ->on('users')
-                ->onDelete('set null')
-                ->onUpdate('cascade');
-        });
+                $table->foreign('patient')
+                    ->references('id')
+                    ->on('users')
+                    ->onDelete('set null')
+                    ->onUpdate('cascade');
+            });
     }
 
     /**

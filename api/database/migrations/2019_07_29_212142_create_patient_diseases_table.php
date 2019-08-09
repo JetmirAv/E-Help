@@ -13,24 +13,25 @@ class CreatePatientDiseasesTable extends Migration
      */
     public function up()
     {
-        Schema::create('patient_diseases', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->bigInteger('patient')->unsigned()->index();
-            $table->bigInteger('disease')->unsigned()->index();
-            $table->timestamps();
+        if (!Schema::hasTable('patient_diseases'))
+            Schema::create('patient_diseases', function (Blueprint $table) {
+                $table->bigIncrements('id');
+                $table->bigInteger('patient')->unsigned()->index();
+                $table->bigInteger('disease')->unsigned()->index();
+                $table->timestamps();
 
-            $table->foreign('patient')
-                ->references('id')
-                ->on('users')
-                ->onDelete('cascade')
-                ->onUpdate('cascade');
+                $table->foreign('patient')
+                    ->references('id')
+                    ->on('users')
+                    ->onDelete('cascade')
+                    ->onUpdate('cascade');
 
-            $table->foreign('disease')
-                ->references('id')
-                ->on('diseases')
-                ->onDelete('cascade')
-                ->onUpdate('cascade');
-        });
+                $table->foreign('disease')
+                    ->references('id')
+                    ->on('diseases')
+                    ->onDelete('cascade')
+                    ->onUpdate('cascade');
+            });
     }
 
     /**

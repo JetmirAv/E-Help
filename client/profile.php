@@ -28,7 +28,11 @@ if (!isset(($_SESSION['token']))) {
                                         <br>
                                         <input style="display: none;" type="file" accept="image/*" class="form-control" id="img">
                                         <div id="profile_image_place" class="col-md-9 d-flex justify-content-center align-items-center" style="border: 1px solid #aaa; height: 180px">
-                                            <p>Upload profile picture</p>
+                                            <?php if ($response['img']) { ?>
+                                                <img style="max-width:95%;" src="<?= $response['img'] ?>" alt="">
+                                            <?php } else { ?>
+                                                <p>Upload profile picture</p>
+                                            <?php } ?>
                                         </div>
                                     </div>
                                 </div>
@@ -141,7 +145,7 @@ if (!isset(($_SESSION['token']))) {
                                     <img src="images/diabet1-semundja.jpg" class="card-img-top" alt="images/diabet1-semundja.jpg">
                                     <div class="card-body">
                                         <h5 class="card-title"><?= $disease['name'] ?></h5>
-                                        <a href="<?="/disease" . "/". $disease['id']?>" class="btn btn-primary">Shiko me shume</a>
+                                        <a href="<?= "/disease" . "/" . $disease['id'] ?>" class="btn btn-primary">Shiko me shume</a>
                                     </div>
                                 </div>
                             </div>
@@ -164,12 +168,12 @@ if (!isset(($_SESSION['token']))) {
                             <div class="col-md-3 mt-3">
                                 <div class="card profile-card-5">
                                     <div class="card-img-block">
-                                        <img class="card-img-top" src="https://images.unsplash.com/photo-1517832207067-4db24a2ae47c" alt="Card image cap">
+                                        <img class="card-img-top" src="<?= $doctor['img'] ?>" alt="Card image cap">
                                     </div>
                                     <div class="card-body pt-0">
                                         <h5 class="patient_name"><?= $doctor['name'] ?></h5>
                                         <p class="patient_text"><?= $doctor['email'] ?></p>
-                                        <a href="<?="/doctor" . "/". $doctor['id']?>" class="btn btn-primary">View profile</a>
+                                        <a href="<?= "/doctor" . "/" . $doctor['id'] ?>" class="btn btn-primary">View profile</a>
                                     </div>
                                 </div>
                             </div>
@@ -194,11 +198,11 @@ if (!isset(($_SESSION['token']))) {
                             <div class="col-md-3 mt-3">
                                 <div class="card profile-card-5">
                                     <div class="card-img-block">
-                                        <img class="card-img-top" src="https://images.unsplash.com/photo-1517832207067-4db24a2ae47c" alt="Card image cap">
+                                        <img class="card-img-top" src="<?= $patient['img'] ?>" alt="Card image cap">
                                     </div>
                                     <div class="card-body pt-0">
                                         <h5 class="patient_name"><?= $patient['name'] ?></h5>
-                                        <a href="<?="/patient" . "/". $patient['id']?>" class="btn btn-primary">View profile</a>
+                                        <a href="<?= "/patient" . "/" . $patient['id'] ?>" class="btn btn-primary">View profile</a>
                                     </div>
                                 </div>
                             </div>
@@ -216,7 +220,7 @@ if (!isset(($_SESSION['token']))) {
         })
         $('#img').change(e => {
             $('#profile_image_place').children().remove()
-            $('#profile_image_place').append('<img id="img_placeholder"></img>')
+            $('#profile_image_place').append('<img style="max-width:95%" id="img_placeholder"></img>')
             var reader = new FileReader();
 
             reader.onload = function(e) {
@@ -230,4 +234,5 @@ if (!isset(($_SESSION['token']))) {
     <?php include_once('./components/footer.php') ?>
 
 </body>
+
 </html>
