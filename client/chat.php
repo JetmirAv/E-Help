@@ -18,7 +18,7 @@
 
 
                         <?php foreach ($contacts as $contact) : ?>
-                            <div class="row mx-1 my-1 rounded" style="background: #ddd; height: 80px">
+                            <div onclick="changeContact(<?=intval($contact['id'])?>)" class="row mx-1 my-1 rounded" style="background: #ddd; height: 80px">
                                 <div class="profile-pic-message">
                                     <img src="<?= $contact['img'] ?>" alt="" class="img-fluid rounded">
                                 </div>
@@ -31,11 +31,11 @@
                 </div>
                 <div class="col p-2 message-main" style="border:#343A40 1px solid; padding: 5px">
                     <div class="row ">
-                        <div class="col d-flex justify-content-start">
+                        <div id="contact_img" class="col d-flex justify-content-start">
                             <img src="<?= $lastContact['img'] ?>" alt="" class="img-fluid rounded">
                         </div>
                         <div class="col-md-11">
-                            <h4><?= $lastContact === null ? "No chat has been made" : $lastContact['name'] . " " . $lastContact['surname'] ?></h4>
+                            <h4 id="contact_name"><?= $lastContact === null ? "No chat has been made" : $lastContact['name'] . " " . $lastContact['surname'] ?></h4>
                         </div>
                     </div>
                     <hr>
@@ -94,7 +94,9 @@
     $('#send_message_form').submit(function(e) {
         e.preventDefault()
         console.log("po")
+        clearTimeout(timeout);
         var content = $('#message_content').val()
+        $('#message_content').val('');
         $.ajax({
             url: 'http://127.0.0.1:8000/' + 'api/chat',
             type: 'POST',
@@ -108,8 +110,8 @@
                 receiver: receiver
             },
             success: function(response) {
-                // console.log(response);
-                updateChat()
+                console.log(response);
+                updateChat(true);
             },
             error: (response) => {
                 console.log(response)
@@ -118,7 +120,7 @@
         });
     })
 
-    function updateChat() {
+    function updateChat(scroll) {
         $.ajax({
             url: 'http://127.0.0.1:8000/' + 'api/chat/refresh',
             type: 'POST',
@@ -133,7 +135,6 @@
             },
             success: function(response) {
                 
-                $("#message_content").val('');
                 var view = $("#message-view");
                 for (var i = 0; i < response.length; i++) {
                     let chat = response[i]
@@ -148,14 +149,19 @@
                     } else {
                         view.append(`
                             <div class="row justify-content-start ml-2 ">
-                                <div class="col-md-8 d-flex justify-content-end">
+                                <div class="col-md-8">
                                     <p class="message-box">${chat.content}</p>
                                 </div>
                             </div>
                             `)
                     }
+                    if(i === response.length - 1){
+                        last_fetched_id = chat.id
+                    }
                 }
-                updateScroll();
+                if(scroll){
+                    updateScroll();
+                }
 
             },
             error: (response) => {
@@ -164,8 +170,65 @@
             }
         });
     }
+    var timeout = setInterval(updateChat, 1000);
 
-    setInterval(updateChat, 1000);
+    function changeContact(id){
+        if(parseInt(id)){
+            $.ajax({
+            url: 'http://127.0.0.1:8000/' + 'api/chat/change_contact',
+            type: 'POST',
+            beforeSend: function(request) {
+                request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                request.setRequestHeader("Accept", "application/json");
+                request.setRequestHeader("Authorization", "Bearer <?= $_SESSION['token'] ?>");
+            },
+            data: {
+                other_contact: id
+            },
+            success: function(response) {
+                $("#message_content").val('');
+                var view = $("#message-view");
+                var img = $("#contact_img");
+                var header = $("#contact_name");
+                console.log(response.contact.name + " " + response.contact.surname)
+                header.empty();
+                header.append("<h4>" + response.contact.name + " " + response.contact.surname + "</h4>")
+                img.empty();
+                img.append('<img src="' + response.contact.img + '" alt="main" class="img-fluid rounded" />')
+                view.empty();
+                let chats = response.chats;
+                for (var i = 0; i < chats.length; i++) {
+                    let chat = chats[i]
+                    if (chat.receiver === parseInt(receiver)) {
+                        view.append(`
+                            <div class="row justify-content-end mr-2">
+                                <div class="col-md-8 d-flex justify-content-end">
+                                    <p class="message-box">${chat.content}</p>
+                                </div>
+                            </div>
+                            `)
+                    } else {
+                        view.append(`
+                            <div class="row justify-content-start ml-2 ">
+                                <div class="col-md-8">
+                                    <p class="message-box">${chat.content}</p>
+                                </div>
+                            </div>
+                            `)
+                    }
+                };
+                updateScroll();
+
+
+            },
+            error: (response) => {
+                console.log(response)
+
+            }
+        });
+        }
+    }
+
 </script>
 
 </html>

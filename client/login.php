@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<?php include_once('./components/head.php') ?>
+<?php include_once './components/head.php'?>
 
 <?php
 
 if (isset(($_SESSION['token']))) {
-  header("Location: /profile");
+	header("Location: /profile");
 }
 ?>
 
 <body>
-  <?php include_once('./components/nav.php') ?>
+  <?php include_once './components/nav.php'?>
 
   <div class="container mt-2 mb-4">
     <div class="col-sm-8 ml-auto mr-auto">
@@ -168,9 +168,7 @@ if (isset(($_SESSION['token']))) {
       </div>
     </div>
   </div>
-  <?php include_once('./components/footer.php') ?>
-
-  <!-- <script type="text/javascript" src="javascript/auth/login.js"></script>   -->
+  <?php include_once './components/footer.php'?>
   <script>
     $('#singninForm').submit(function(e) {
       e.preventDefault()
@@ -196,8 +194,8 @@ if (isset(($_SESSION['token']))) {
           }, (e) => {
             console.log(e);
 
-            // if (e)
-            // window.location.href = "/";
+            if (e)
+            window.location.href = "/";
           })
         },
         error: (response) => {
@@ -207,45 +205,52 @@ if (isset(($_SESSION['token']))) {
       });
     })
 
+    let img = null;
+
     $('#singnupFrom').submit(function(e) {
       e.preventDefault()
-      let formInput = {
-        email: $('#signupEmail').val(),
-        state: $('#signupState').val(),
-        postal: $('#signupPostal').val(),
-        phone_number: $('#signupPhone').val(),
-        name: $('#signupFirstName').val(),
-        surname: $('#signupLastName').val(),
-        address: $('#signupAddress').val(),
-        city: $('#signupCity').val(),
-        pos: $('#signupPosition').val(),
-        password: $('#signupPassword').val(),
-        c_password: $('#signupCPassword').val(),
-        birthday: $('#signupBirthday').val()
-      }
-
-
-      $.ajax({
-        url: 'http://127.0.0.1:8000/' + 'api/auth/register',
-        type: 'POST',
-        beforeSend: function(request) {
-          request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-          request.setRequestHeader("Accept", "application/json");
-        },
-        data: formInput,
-        success: function(response) {
-          $.post('helpers/authorization.php', {
-            token: response
-          }, (e) => {
-            if (e)
-              window.location.href = "/";
-          })
-        },
-        error: (response) => {
-          console.log(response)
-
+      if(img){
+        let formInput = {
+          email: $('#signupEmail').val(),
+          state: $('#signupState').val(),
+          postal: $('#signupPostal').val(),
+          phone_number: $('#signupPhone').val(),
+          name: $('#signupFirstName').val(),
+          surname: $('#signupLastName').val(),
+          address: $('#signupAddress').val(),
+          city: $('#signupCity').val(),
+          pos: $('#signupPosition').val(),
+          password: $('#signupPassword').val(),
+          c_password: $('#signupCPassword').val(),
+          birthday: $('#signupBirthday').val()
         }
-      });
+
+
+        $.ajax({
+          url: 'http://127.0.0.1:8000/' + 'api/auth/register',
+          type: 'POST',
+          beforeSend: function(request) {
+            request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            request.setRequestHeader("Accept", "application/json");
+          },
+          data: formInput,
+          success: function(response) {
+            $.post('helpers/authorization.php', {
+              token: response
+            }, (e) => {
+              if (e)
+                window.location.href = "/";
+            })
+          },
+          error: (response) => {
+            console.log(response)
+
+          }
+        });   
+      } else {
+        
+      }
+      
     })
 
     function profileUpload() {
@@ -259,7 +264,7 @@ if (isset(($_SESSION['token']))) {
         reader.onload = function(e) {
           $('#profileImg').attr('src', e.target.result);
         }
-
+        img = input.files[0];
         reader.readAsDataURL(input.files[0]);
       }
     }

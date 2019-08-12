@@ -15,6 +15,7 @@ class ChatController extends Controller
         $role = $user->role_id === 3 ? "patient" : "doctor";
         $join = $user->role_id === 3 ? "doctor_patients.doctor" : "doctor_patients.patient";
 
+
         $contacts = DoctorPatient::distinct()
             ->select('users.id', 'users.name', 'users.surname', 'users.img', 'users.role_id')
             ->where($role, $user->id)
@@ -27,13 +28,13 @@ class ChatController extends Controller
             ->orderBy('created_at', 'desc')
             ->first();
 
-        $otherContact = $user->id === $last_chat->receiver ? $last_chat->sender : $last_chat->receiver;
+        $other_contact = $user->id === $last_chat->receiver ? $last_chat->sender : $last_chat->receiver;
 
-        $chats = Chats::where(function ($query) use ($user, $otherContact) {
-            $query->where('receiver', $user->id)->where('sender', $otherContact);
+        $chats = Chats::where(function ($query) use ($user, $other_contact) {
+            $query->where('receiver', $user->id)->where('sender', $other_contact);
         })
-            ->orWhere(function ($query) use ($user, $otherContact) {
-                $query->where('sender', $user->id)->where('receiver', $otherContact);
+            ->orWhere(function ($query) use ($user, $other_contact) {
+                $query->where('sender', $user->id)->where('receiver', $other_contact);
             })
             ->orderBy('created_at', 'asc')
             ->get();
@@ -42,7 +43,7 @@ class ChatController extends Controller
         return response()->json([
             'contacts' => $contacts,
             'chats' => $chats,
-            'otherContact' => $otherContact,
+            'otherContact' => $other_contact,
         ]);
     }
 
@@ -67,10 +68,12 @@ class ChatController extends Controller
         }
 
         $chat = Chats::create(['sender' => $sender, 'receiver' => $receiver, 'content' => $content]);
+        $last_fetched_id = end($chat);
+
 
         return response()->json([
             'chat' => $chat,
-            'success' => true
+            'success' => true,
         ], 200);
     }
 
@@ -78,40 +81,60 @@ class ChatController extends Controller
     {
         $data = request()->all();
         $current_user = auth()->user();
-        $receiver = intval($data['receiver']);
+        $other_contact = intval($data['receiver']);
         $last_fetched_id = $data['last_fetched_id'];
 
-        // $chats = Chats::where(function ($query) use ($current_user, $receiver) {
-        //     $query->where('receiver', $current_user->id)->where('sender', $receiver);
-        // })
-        //     ->orWhere(function ($query) use ($current_user, $receiver) {
-        //         $query->where('sender', $current_user->id)->where('receiver', $receiver);
-        //     })
-        //     ->get();
-
-
-        $chatss = Chats::where(function($query) use ($current_user, $receiver)
+        $chats = Chats::where(function($query) use ($current_user, $other_contact)
         {
-            $query->where(function ($query) use ($current_user, $receiver){
-                $query->where('receiver', $current_user->id)->where('sender', $receiver);
+            $query->where(function ($query) use ($current_user, $other_contact){
+                $query->where('receiver', $current_user->id)->where('sender', $other_contact);
             })
-            ->orWhere(function ($query) use ($current_user, $receiver) {
-                $query->where('sender', $current_user->id)->where('receiver', $receiver);
+            ->orWhere(function ($query) use ($current_user, $other_contact) {
+                $query->where('sender', $current_user->id)->where('receiver', $other_contact);
             });
         })->where('id', '>', $last_fetched_id)
         ->orderBy('created_at', 'asc')
         ->get();    
+        return $chats;
+    }
 
-        return $chatss;
+    public function change_contact()
+    {
+        $data = request()->all();
+        $current_user = auth()->user();
+        $other_contact = intval($data['other_contact']);
+
+        if ($current_user->role_id === 3) {
+            $relation = DoctorPatient::where('patient', $current_user->id)->where('doctor', $other_contact)->get();
+        } else if ($current_user->role_id === 2) {
+            $relation = DoctorPatient::where('doctor', $current_user->id)->where('patient', $other_contact)->get();
+        } else {
+            return response()->json(['error' => 'Could not find this contact'], 404);
+        }
+
+        if ($relation === null) {
+            return response()->json(['error' => 'Could not find this contact'], 404);
+        }
 
 
+        $chats = Chats::where(function($query) use ($current_user, $other_contact)
+        {
+            $query->where(function ($query) use ($current_user, $other_contact){
+                $query->where('receiver', $current_user->id)->where('sender', $other_contact);
+            })
+            ->orWhere(function ($query) use ($current_user, $other_contact) {
+                $query->where('sender', $current_user->id)->where('receiver', $other_contact);
+            });
+        })
+        ->orderBy('created_at', 'asc')
+        ->get();    
 
-        // if($chats){
-        //     return $chats->where('chats.id', '>', $last_fetched_id)->get();
-        // } else {
-        //     return $chats;
-        // }
 
+        $other_contact = User::where('id', $other_contact)->first();
 
+        return response()->json([
+            'chats' => $chats,
+            'contact' => $other_contact
+        ]);
     }
 }

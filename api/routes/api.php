@@ -91,5 +91,6 @@ Route::group([
     Route::get('/', 'ChatController@index')->name('chats.index');
     Route::match(['get', 'head'], '/{receiver}', 'ChatController@show')->name('chats.show');
     Route::post('/', 'ChatController@store')->name('chats.store');
-    Route::post('/refresh', 'ChatController@refresh')->name('chats.store');
+    Route::post('/refresh', 'ChatController@refresh')->name('chats.refresh');
+    Route::post('/change_contact', 'ChatController@change_contact')->name('chats.change_contact');
 });

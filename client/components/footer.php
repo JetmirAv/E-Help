@@ -40,5 +40,5 @@
             }
         });
     }
-    setInterval(refreshToken, 1000 * 60 * 20);
+    setInterval(refreshToken, 1000 * 60 * 10);
 </script>
