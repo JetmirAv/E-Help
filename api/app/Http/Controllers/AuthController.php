@@ -19,8 +19,26 @@ class AuthController extends Controller
     public function register()
     {
 
-        $data = request()->all();
+        request()->validate([
+            // 'img' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'confirmed|min:8',
+            'state' => 'required',
+            'postal' => 'required',
+            'phone_number' => 'required',
+            'name' => 'required|',
+            'surname' => 'required|',
+            'address' => 'required|',
+            'city' => 'required|',
+            'pos' => 'required|',
+            'birthday' => 'required|date',
+        ]);
+
+        $data = request()->except('img');
         $data['role_id'] = (int) $data['pos'] === 2 ? 2 : 3;
+
+        
+
 
         $user = User::create($data);
 

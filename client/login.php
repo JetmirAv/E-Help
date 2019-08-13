@@ -1,17 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<?php include_once './components/head.php'?>
-
-<?php
-
-if (isset(($_SESSION['token']))) {
-	header("Location: /profile");
-}
-?>
+<?php include_once './components/head.php' ?>
 
 <body>
-  <?php include_once './components/nav.php'?>
+  <?php include_once './components/nav.php' ?>
 
   <div class="container mt-2 mb-4">
     <div class="col-sm-8 ml-auto mr-auto">
@@ -55,7 +48,7 @@ if (isset(($_SESSION['token']))) {
 
 
             <!-- Sign Up -->
-            <form action="#" id="singnupFrom">
+            <form action="#" id="singnupFrom" enctype="multipart/form-data">
               <div class="text-center" style="margin-bottom: 20px">
                 <label class="font-weight-bold">Profile Picture <span class="text-danger">*</span></label><br />
                 <img id="profileImg" onclick="profileUpload()" width="80px" height="80px" src="images/profile.png" class="rounded-circle border p-1">
@@ -168,7 +161,7 @@ if (isset(($_SESSION['token']))) {
       </div>
     </div>
   </div>
-  <?php include_once './components/footer.php'?>
+  <?php include_once './components/footer.php' ?>
   <script>
     $('#singninForm').submit(function(e) {
       e.preventDefault()
@@ -195,7 +188,7 @@ if (isset(($_SESSION['token']))) {
             console.log(e);
 
             if (e)
-            window.location.href = "/";
+              window.location.href = "/";
           })
         },
         error: (response) => {
@@ -209,7 +202,8 @@ if (isset(($_SESSION['token']))) {
 
     $('#singnupFrom').submit(function(e) {
       e.preventDefault()
-      if(img){
+      console.log("signup")
+      if (img) {
         let formInput = {
           email: $('#signupEmail').val(),
           state: $('#signupState').val(),
@@ -221,20 +215,29 @@ if (isset(($_SESSION['token']))) {
           city: $('#signupCity').val(),
           pos: $('#signupPosition').val(),
           password: $('#signupPassword').val(),
-          c_password: $('#signupCPassword').val(),
-          birthday: $('#signupBirthday').val()
+          password_confirmation: $('#signupCPassword').val(),
+          birthday: $('#signupBirthday').val(),
+          // img: img
         }
+        console.log(img);
 
 
         $.ajax({
           url: 'http://127.0.0.1:8000/' + 'api/auth/register',
           type: 'POST',
+          // contentType: 'multipart/form-data',
+          // processData : false, /// Add this line without processing parameters
+          contentType: false,
           beforeSend: function(request) {
             request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
             request.setRequestHeader("Accept", "application/json");
+            // console.log(request)
           },
           data: formInput,
           success: function(response) {
+            alert("response")
+            console.log(response)
+            alert(response)
             $.post('helpers/authorization.php', {
               token: response
             }, (e) => {
@@ -246,11 +249,11 @@ if (isset(($_SESSION['token']))) {
             console.log(response)
 
           }
-        });   
+        });
       } else {
-        
+
       }
-      
+
     })
 
     function profileUpload() {

@@ -16,6 +16,8 @@ class CreateDiseaseDocsTable extends Migration
         if (!Schema::hasTable('disease_docs'))
             Schema::create('disease_docs', function (Blueprint $table) {
                 $table->bigIncrements('id');
+                $table->string('path');
+                $table->bigInteger('disease_id')->unsigned()->index()->nullable();
                 $table->timestamps();
             });
     }

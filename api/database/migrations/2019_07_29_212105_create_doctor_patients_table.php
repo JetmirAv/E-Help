@@ -13,7 +13,7 @@ class CreateDoctorPatientsTable extends Migration
      */
     public function up()
     {
-        if (!Schema::hasTable('users'))
+        if (!Schema::hasTable('doctor_patients'))
             Schema::create('doctor_patients', function (Blueprint $table) {
                 $table->bigIncrements('id');
                 $table->bigInteger('doctor')->unsigned()->index()->nullable();
