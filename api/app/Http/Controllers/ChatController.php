@@ -28,16 +28,21 @@ class ChatController extends Controller
             ->orderBy('created_at', 'desc')
             ->first();
 
-        $other_contact = $user->id === $last_chat->receiver ? $last_chat->sender : $last_chat->receiver;
+        $other_contact = null;
+        $chats = null;
 
-        $chats = Chats::where(function ($query) use ($user, $other_contact) {
-            $query->where('receiver', $user->id)->where('sender', $other_contact);
-        })
-            ->orWhere(function ($query) use ($user, $other_contact) {
-                $query->where('sender', $user->id)->where('receiver', $other_contact);
+        if ($last_chat) {
+            $other_contact = $user->id === $last_chat->receiver ? $last_chat->sender : $last_chat->receiver;
+            $chats = Chats::where(function ($query) use ($user, $other_contact) {
+                $query->where('receiver', $user->id)->where('sender', $other_contact);
             })
-            ->orderBy('created_at', 'asc')
-            ->get();
+                ->orWhere(function ($query) use ($user, $other_contact) {
+                    $query->where('sender', $user->id)->where('receiver', $other_contact);
+                })
+                ->orderBy('created_at', 'asc')
+                ->get();
+        }
+
 
 
         return response()->json([
@@ -84,17 +89,16 @@ class ChatController extends Controller
         $other_contact = intval($data['receiver']);
         $last_fetched_id = $data['last_fetched_id'];
 
-        $chats = Chats::where(function($query) use ($current_user, $other_contact)
-        {
-            $query->where(function ($query) use ($current_user, $other_contact){
+        $chats = Chats::where(function ($query) use ($current_user, $other_contact) {
+            $query->where(function ($query) use ($current_user, $other_contact) {
                 $query->where('receiver', $current_user->id)->where('sender', $other_contact);
             })
-            ->orWhere(function ($query) use ($current_user, $other_contact) {
-                $query->where('sender', $current_user->id)->where('receiver', $other_contact);
-            });
+                ->orWhere(function ($query) use ($current_user, $other_contact) {
+                    $query->where('sender', $current_user->id)->where('receiver', $other_contact);
+                });
         })->where('id', '>', $last_fetched_id)
-        ->orderBy('created_at', 'asc')
-        ->get();    
+            ->orderBy('created_at', 'asc')
+            ->get();
         return $chats;
     }
 
@@ -117,17 +121,16 @@ class ChatController extends Controller
         }
 
 
-        $chats = Chats::where(function($query) use ($current_user, $other_contact)
-        {
-            $query->where(function ($query) use ($current_user, $other_contact){
+        $chats = Chats::where(function ($query) use ($current_user, $other_contact) {
+            $query->where(function ($query) use ($current_user, $other_contact) {
                 $query->where('receiver', $current_user->id)->where('sender', $other_contact);
             })
-            ->orWhere(function ($query) use ($current_user, $other_contact) {
-                $query->where('sender', $current_user->id)->where('receiver', $other_contact);
-            });
+                ->orWhere(function ($query) use ($current_user, $other_contact) {
+                    $query->where('sender', $current_user->id)->where('receiver', $other_contact);
+                });
         })
-        ->orderBy('created_at', 'asc')
-        ->get();    
+            ->orderBy('created_at', 'asc')
+            ->get();
 
 
         $other_contact = User::where('id', $other_contact)->first();

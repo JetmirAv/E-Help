@@ -72,7 +72,11 @@ Route::group([
     'prefix' => 'patient'
 ], function () {
     Route::get('/', 'PatientController@index')->name('patient.index');
+    Route::get('/get_patient_doctors', 'PatientController@get_doctors')->name('patient.get_doctors');
 
+    Route::post('/add_patient_to_doctor', 'PatientController@add_doctor')
+        ->name('patient.add_doctor')
+        ->middleware('isPatient');
     Route::delete('/{patient}', 'PatientController@destroy')->name('patient.destroy');
     Route::match(['put', 'patch'], '/{patient}', 'PatientController@update')->name('patient.update');
     Route::match(['get', 'head'], '/{patient}', 'PatientController@show')->name('patient.show');

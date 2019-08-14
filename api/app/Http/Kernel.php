@@ -65,6 +65,7 @@ class Kernel extends HttpKernel
         // 'cors' => \App\Http\Middleware\Cors::class,
         'isAdmin' => \App\Http\Middleware\CheckIsAdmin::class,
         'isAdminOrSelf' => \App\Http\Middleware\CheckIsAdminOrSelf::class,
+        'isPatient' => \App\Http\Middleware\IsPatient::class,
     ];
 
     /**

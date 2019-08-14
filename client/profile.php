@@ -29,9 +29,9 @@ if (!isset(($_SESSION['token']))) {
                                         <input style="display: none;" type="file" accept="image/*" class="form-control" id="img">
                                         <div id="profile_image_place" class="col-md-9 d-flex justify-content-center align-items-center" style="border: 1px solid #aaa; height: 180px">
                                             <?php if ($response['img']) { ?>
-                                                <img style="max-width:95%;" src="<?= $response['img'] ?>" alt="">
+                                            <img style="max-width:95%;" src="<?= $response['img'] ?>" alt="">
                                             <?php } else { ?>
-                                                <p>Upload profile picture</p>
+                                            <p>Upload profile picture</p>
                                             <?php } ?>
                                         </div>
                                     </div>
@@ -129,90 +129,131 @@ if (!isset(($_SESSION['token']))) {
 
         <div class="container-fluid my-5 py-4">
             <?php if ($response['role_id'] === 3) : ?>
-                <div class="row mt-4 mb-1">
-                    <div class="col">
-                        <h4 class="text-muted">Diseases</h4>
-                    </div>
-                    <div class="col d-flex justify-content-end">
-                        <a href="#" class="btn btn-primary btn-180">Add More</a>
-                    </div>
+            <div class="row mt-4 mb-1">
+                <div class="col">
+                    <h4 class="text-muted">Diseases</h4>
                 </div>
-                <div class="container-fluid">
-                    <div style="border: 1px solid #888;" class="row mb-4 py-4 px-1">
-                        <?php foreach ($response['diseases'] as $disease) : ?>
-                            <div class="col-md-3">
-                                <div class="card">
-                                    <img src="images/diabet1-semundja.jpg" class="card-img-top" alt="images/diabet1-semundja.jpg">
-                                    <div class="card-body">
-                                        <h5 class="card-title"><?= $disease['name'] ?></h5>
-                                        <a href="<?= "/disease" . "/" . $disease['id'] ?>" class="btn btn-primary">Shiko me shume</a>
-                                    </div>
-                                </div>
+                <div class="col d-flex justify-content-end">
+                    <a href="#" class="btn btn-primary btn-180">Add More</a>
+                </div>
+            </div>
+            <div class="container-fluid">
+                <div style="border: 1px solid #888;" class="row mb-4 py-4 px-1">
+                    <?php foreach ($response['diseases'] as $disease) : ?>
+                    <div class="col-md-3">
+                        <div class="card">
+                            <img src="images/diabet1-semundja.jpg" class="card-img-top" alt="images/diabet1-semundja.jpg">
+                            <div class="card-body">
+                                <h5 class="card-title"><?= $disease['name'] ?></h5>
+                                <a href="<?= "/disease" . "/" . $disease['id'] ?>" class="btn btn-primary">Shiko me shume</a>
                             </div>
-                        <?php endforeach; ?>
+                        </div>
                     </div>
+                    <?php endforeach; ?>
                 </div>
-                <div class="row mb-1 mt-4">
-                    <div class="col">
-                        <h4 class="text-muted">Doctors</h4>
-                    </div>
-                    <div class="col d-flex justify-content-end">
-                        <a href="#" class="btn btn-primary btn-180">Add More</a>
-                    </div>
+            </div>
+            <div class="row mb-1 mt-4">
+                <div class="col">
+                    <h4 class="text-muted">Doctors</h4>
                 </div>
-                <div class="container-fluid">
-                    <div style="border: 1px solid #888;" class="row mb-4 py-4">
+                <div class="col d-flex justify-content-end">
+                    <button 
+                        id="add_doctors_to_patient"
+                        type="button" 
+                        class="btn btn-primary btn-180" 
+                        data-toggle="modal" 
+                        data-target="#exampleModalCenter">
+                        Add More
+                    </button>
+                    <!-- <a href="#" class="btn btn-primary btn-180">Add More</a> -->
+                </div>
+            </div>
+            <div class="container-fluid">
+                <div style="border: 1px solid #888;" class="row mb-4 py-4">
 
-                        <?php foreach ($response['doctors'] as $doctor) : ?>
+                    <?php foreach ($response['doctors'] as $doctor) : ?>
 
-                            <div class="col-md-3 mt-3">
-                                <div class="card profile-card-5">
-                                    <div class="card-img-block">
-                                        <img class="card-img-top" src="<?= $doctor['img'] ?>" alt="Card image cap">
-                                    </div>
-                                    <div class="card-body pt-0">
-                                        <h5 class="patient_name"><?= $doctor['name'] ?></h5>
-                                        <p class="patient_text"><?= $doctor['email'] ?></p>
-                                        <a href="<?= "/doctor" . "/" . $doctor['id'] ?>" class="btn btn-primary">View profile</a>
-                                    </div>
-                                </div>
+                    <div class="col-md-3 mt-3">
+                        <div class="card profile-card-5">
+                            <div class="card-img-block">
+                                <img class="card-img-top" src="<?= $doctor['img'] ?>" alt="Card image cap">
                             </div>
-                        <?php endforeach; ?>
+                            <div class="card-body pt-0">
+                                <h5 class="patient_name"><?= $doctor['name'] ?></h5>
+                                <p class="patient_text"><?= $doctor['email'] ?></p>
+                                <a href="<?= "/doctor" . "/" . $doctor['id'] ?>" class="btn btn-primary">View profile</a>
+                            </div>
+                        </div>
                     </div>
+                    <?php endforeach; ?>
                 </div>
+            </div>
             <?php endif ?>
             <?php if ($response['role_id'] === 2) : ?>
 
-                <div class="row mb-1 mt-4">
-                    <div class="col">
-                        <h4 class="text-muted">Patients</h4>
-                    </div>
-                    <div class="col d-flex justify-content-end">
-                        <a href="#" class="btn btn-primary btn-180">Add More</a>
-                    </div>
+            <div class="row mb-1 mt-4">
+                <div class="col">
+                    <h4 class="text-muted">Patients</h4>
                 </div>
-                <div class="container-fluid">
-                    <div style="border: 1px solid #888;" class="row mb-4 py-4">
-                        <?php foreach ($response['patients'] as $patient) : ?>
+                <div class="col d-flex justify-content-end">
+                    <button type="button" class="btn btn-primary btn-180" data-toggle="modal" data-target="#exampleModalCenter">
+                        Add More
+                    </button>
+                    <!-- <a href="#" class="btn btn-primary btn-180">Add More</a> -->
+                </div>
+            </div>
+            <div class="container-fluid">
+                <div style="border: 1px solid #888;" class="row mb-4 py-4">
+                    <?php foreach ($response['patients'] as $patient) : ?>
 
-                            <div class="col-md-3 mt-3">
-                                <div class="card profile-card-5">
-                                    <div class="card-img-block">
-                                        <img class="card-img-top" src="<?= $patient['img'] ?>" alt="Card image cap">
-                                    </div>
-                                    <div class="card-body pt-0">
-                                        <h5 class="patient_name"><?= $patient['name'] ?></h5>
-                                        <a href="<?= "/patient" . "/" . $patient['id'] ?>" class="btn btn-primary">View profile</a>
-                                    </div>
-                                </div>
+                    <div class="col-md-3 mt-3">
+                        <div class="card profile-card-5">
+                            <div class="card-img-block">
+                                <img class="card-img-top" src="<?= $patient['img'] ?>" alt="Card image cap">
                             </div>
-                        <?php endforeach; ?>
+                            <div class="card-body pt-0">
+                                <h5 class="patient_name"><?= $patient['name'] ?></h5>
+                                <a href="<?= "/patient" . "/" . $patient['id'] ?>" class="btn btn-primary">View profile</a>
+                            </div>
+                        </div>
                     </div>
+                    <?php endforeach; ?>
                 </div>
+            </div>
             <?php endif ?>
         </div>
 
     </section>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalCenterTitle">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body d-flex justify-content-center">
+                    <div class="form-group">
+                        <label for="exampleFormControlSelect1">Example select</label>
+                        <select class="form-control" id="exampleFormControlSelect1">
+                            <option value="1">1</option>
+                            <option>2</option>
+                            <option>3</option>
+                            <option>4</option>
+                            <option>5</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script>
         $('#profile_image_place').click(e => {
@@ -228,6 +269,10 @@ if (!isset(($_SESSION['token']))) {
             }
 
             reader.readAsDataURL(e.target.files[0]);
+        })
+
+        $("#add_doctors_to_patient").on('click', e => {
+            console.log("asfasf");
         })
     </script>
     <hr />

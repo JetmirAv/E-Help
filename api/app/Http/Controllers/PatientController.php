@@ -2,13 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\PatientDoctor;
 use Illuminate\Http\Request;
 
 use App\Models\User;
-use App\Http\Resources\PatientResource;
+use App\Models\DoctorPatient;
 
 class PatientController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth:api');
+    }
 
     public function index()
     {
@@ -63,5 +69,36 @@ class PatientController extends Controller
         $patient->delete();
 
         return response()->json(null, 204);
+    }
+
+    public function get_doctors()
+    {
+
+        $doctors = auth()->user()->doctors;
+        $doctors_id = [];
+
+        foreach ($doctors as $doctor) {
+            array_push($doctors_id, $doctor->id);
+        }
+
+        $found_doctors = User::select(['name', 'surname', 'id'])->where('role_id', 2)->whereNotIn('id', $doctors_id)->get();
+        return response()->json([
+            'count' => $found_doctors
+        ], 200);
+    }
+
+    public function add_doctor()
+    {
+        $current_user = auth()->user()->id;
+        $doctor_id = intval(request()->all()['doctor_id']);
+
+        DoctorPatient::create([
+            'patient' => $current_user,
+            'doctor' => $doctor_id
+        ]);
+
+        return response()->json([
+            'success' => 'Doctor added successfuly'
+        ], 200);
     }
 }

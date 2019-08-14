@@ -12,6 +12,7 @@ if (!isset($_SESSION['token'])) {
 
 if (!isset($lastContact)) {
 
+
 	$token = $_SESSION['token'];
 
 	$header = "Authorization: Bearer "  . $_SESSION['token'];
@@ -26,9 +27,10 @@ if (!isset($lastContact)) {
 			if ($cont['id'] === $response['otherContact'])
 				$lastContact = $cont;
 		}
+	}
+	if($chats) {
 		$last_chat = end($chats);
 	}
-
 }
 
 
