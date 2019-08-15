@@ -19,6 +19,7 @@ class User extends Authenticatable implements JWTSubject
     protected $fillable = [
         'role_id',
         'name',
+        'doctor',
         'surname',
         'email',
         'img',
@@ -59,28 +60,39 @@ class User extends Authenticatable implements JWTSubject
         }
     }    
 
+    public function setEmailAttribute($email)
+    {
+        if ( !empty($email) ) {
+            $this->attributes['email'] = strtolower($email);
+        }
+    }   
+
+
+    public function getEmailAttribute($email)
+    {
+        if ( !empty($email) ) {
+            return strtolower($email);
+        }
+    }  
+
     public function role(){
-        return $this->belongsTo('App\Models\Role', 'role_id');
+        return $this->belongsTo(Role::class, 'role_id');
+    }
+
+    public function Doctor(){
+        return $this->belongsTo(User::class, 'doctor');
     }
 
     public function patients(){
-        return $this->belongsToMany('App\Models\User', 'doctor_patients', 'doctor', 'patient')->withPivot('id');
-    }
-
-    public function doctors(){
-        return $this->belongsToMany('App\Models\User', 'doctor_patients', 'patient', 'doctor')->withPivot('id');
+        return $this->hasMany(User::class, 'doctor', 'id');
     }
 
 
     public function disease(){
-        return $this->belongsToMany('App\Models\Diseases', 'patient_diseases', 'patient', 'disease')->withPivot('id');
+        return $this->belongsToMany(Diseases::class, 'patient_diseases', 'patient', 'disease')->withPivot('id');
     }
 
-    // public function disease(){
-    //     return $this->hasMany( Disease , 'doctor_patients', 'patient', 'doctor')->withPivot('id');
-    // }
-
     public function chats(){
-        return $this->hasMany('App\Models\Chat', 'sender');
+        return $this->hasMany(Chat::class, 'sender');
     }
 }

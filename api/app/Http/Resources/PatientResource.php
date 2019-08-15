@@ -29,7 +29,7 @@ class PatientResource extends JsonResource
             'postal' => $this->postal,
             'created_at' => (string) $this->created_at,
             'updated_at' => (string) $this->updated_at,
-            'doctors' => $this->doctors,
+            'doctor' => $this->Doctor,
             'diseases' => $this->disease,
             'role' => $this->role,
         ];

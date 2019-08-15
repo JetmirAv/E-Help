@@ -1,3 +1,3 @@
 <?php 
 
-require('./about.php');
+require('./view/about.php');

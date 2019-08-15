@@ -22,7 +22,7 @@ class AuthController extends Controller
         request()->validate([
             // 'img' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'email' => 'required|email|unique:users,email',
-            'password' => 'confirmed|min:8',
+            'password' => 'required|confirmed|min:8',
             'state' => 'required',
             'postal' => 'required',
             'phone_number' => 'required',
@@ -37,9 +37,6 @@ class AuthController extends Controller
         $data = request()->except('img');
         $data['role_id'] = (int) $data['pos'] === 2 ? 2 : 3;
 
-        
-
-
         $user = User::create($data);
 
         $credentials = request(['email', 'password']);
@@ -48,6 +45,45 @@ class AuthController extends Controller
         }
 
         return $this->respondWithToken($token, $user);
+
+        // $this->login();
+
+    }
+    public function update()
+    {
+
+        error_log(auth()->user()->email);
+
+        
+        if(auth()->user()->email === strtolower(request(['email'])['email'])){
+            request()->validate([
+                // 'img' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+                'password' => 'min:8|nullable',
+                'birthday' => 'date',
+            ]);
+        } else {
+            request()->validate([
+                // 'img' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+                'email' => '|email|unique:users,email',
+                'password' => 'min:8|nullable',
+                'birthday' => 'date',
+            ]);
+        }
+
+
+        $data = request()->except('img');
+
+        if(!$data['password']){
+            unset($data['password']);
+        }
+
+        $user = User::find(auth()->user()->id)->update($data);
+        $user = User::find(auth()->user()->id)->first();
+
+        return response()->json([
+            'user' => $user
+        ]);
+
     }
     public function login()
     {
@@ -63,10 +99,10 @@ class AuthController extends Controller
     public function me()
     {
         $user = auth()->user();
-        
-        if($user->role_id === 2){
+
+        if ($user->role_id === 2) {
             $user = new DoctorResource($user);
-        } else if ($user->role_id === 3){
+        } else if ($user->role_id === 3) {
             $user = new PatientResource($user);
         }
 
@@ -94,7 +130,7 @@ class AuthController extends Controller
             'user_name' => $user->name,
             'user_role' => $user->role_id,
             'token_type' => 'bearer',
-            'expires_in' => auth()->factory()->getTTL() * 60
+            'expires_in' => Carbon::parse(Carbon::now()->timestamp + (auth()->factory()->getTTL() * 60))
         ]);
     }
 }

@@ -14,22 +14,43 @@
                     <hr>
                     <div class="message-list">
                         <?php
-                        if ($contacts !== null) {
-                            foreach ($contacts as $contact) : ?>
+                        if ($role === 2) {
+                            if ($contacts !== null) {
+                                foreach ($contacts as $contact) : ?>
                         <div onclick="changeContact(<?= intval($contact['id']) ?>)" class="row mx-1 my-1 rounded" style="background: #ddd; height: 80px">
                             <div class="profile-pic-message">
                                 <img src="<?= $contact['img'] ?>" alt="" class="img-fluid rounded">
                             </div>
-                            <div class="pt-4 pl-2 user-message">
-                                <h6><?= $contact['name'] . " " . $contact['surname'] ?></h6>
+                            <div class="pt-2 pl-2 user-message">
+                                <h6><?= $contact['name'] ?></h6>
+                                <h6><?= $contact['surname'] ?></h6>
                             </div>
                         </div>
                         <?php
-                            endforeach;
-                        } else {
-                            ?>
+                                endforeach;
+                            } else {
+                                ?>
                         <p>Your contacts will be displayed here</p>
                         <?php
+                            }
+                        } else {
+                            if ($contacts !== null) {
+                                ?>
+                        <div onclick="changeContact(<?= intval($contacts['id']) ?>)" class="row mx-1 my-1 rounded" style="background: #ddd; height: 80px">
+                            <div class="profile-pic-message">
+                                <img src="<?= $contacts['img'] ?>" alt="" class="img-fluid rounded">
+                            </div>
+                            <div class="pt-2 pl-2 user-message">
+                                <h6><?= $contacts['name'] ?></h6>
+                                <h6><?= $contacts['surname'] ?></h6>
+                            </div>
+                        </div>
+                        <?php
+                            } else {
+                                ?>
+                        <p>Your contacts will be displayed here</p>
+                        <?php
+                            }
                         }
                         ?>
                     </div>
@@ -89,9 +110,22 @@
 <script>
     let receiver, last_fetched_id = null
     <?php if ($lastContact !== null) { ?>
+    console.log("ckemmi")
     receiver = "<?= $lastContact['id'] ?>"
+    <?php if ($chats) { ?>
     last_fetched_id = "<?= $last_chat['id'] ?>"
-    <?php } ?>
+    <?php }
+    } ?>
+
+    function chatInterval(param) {
+        return setInterval(function() {
+            updateChat(param)
+        }, 2500);
+    }
+    let timeout = null;
+    if (receiver) {
+        timeout = chatInterval(false)
+    }
 
     function updateScroll() {
         var element = document.getElementById("message-view");
@@ -99,11 +133,10 @@
     }
     updateScroll()
 
-    <?php if ($contacts !== null && $lastContact !== null) { ?>
     $('#send_message_form').submit(function(e) {
         e.preventDefault()
         console.log("po")
-        clearTimeout(timeout);
+        clearInterval(timeout)
         var content = $('#message_content').val()
         $('#message_content').val('');
         $.ajax({
@@ -120,22 +153,18 @@
             },
             success: function(response) {
                 console.log(response);
-                updateChat(true);
+                updateChat(true)
+                timeout = chatInterval(false)
+                // setTimeout(updateScroll, 500)
             },
             error: (response) => {
                 console.log(response)
             }
         });
     })
-    <?php } else { ?>
 
-    $('#bttn-send').on('click', function(e) {
-        e.preventDefault()
-    })
-    <?php
-    } ?>
 
-    function updateChat(scroll) {
+    function updateChat(param) {
         $.ajax({
             url: 'http://127.0.0.1:8000/' + 'api/chat/refresh',
             type: 'POST',
@@ -149,35 +178,34 @@
                 last_fetched_id: last_fetched_id
             },
             success: function(response) {
-
-                var view = $("#message-view");
-                for (var i = 0; i < response.length; i++) {
-                    let chat = response[i]
-                    if (chat.receiver === parseInt(receiver)) {
-                        view.append(`
-                            <div class="row justify-content-end mr-2">
-                                <div class="col-md-8 d-flex justify-content-end">
-                                    <p class="message-box">${chat.content}</p>
+                if (response) {
+                    var view = $("#message-view");
+                    for (var i = 0; i < response.length; i++) {
+                        let chat = response[i]
+                        if (chat.receiver === parseInt(receiver)) {
+                            view.append(`
+                                <div class="row justify-content-end mr-2">
+                                    <div class="col-md-8 d-flex justify-content-end">
+                                        <p class="message-box">${chat.content}</p>
+                                    </div>
                                 </div>
-                            </div>
-                            `)
-                    } else {
-                        view.append(`
-                            <div class="row justify-content-start ml-2 ">
-                                <div class="col-md-8">
-                                    <p class="message-box">${chat.content}</p>
+                                `)
+                        } else {
+                            view.append(`
+                                <div class="row justify-content-start ml-2 ">
+                                    <div class="col-md-8">
+                                        <p class="message-box">${chat.content}</p>
+                                    </div>
                                 </div>
-                            </div>
-                            `)
-                    }
-                    if (i === response.length - 1) {
+                                `)
+                        }
                         last_fetched_id = chat.id
+                        updateScroll()
+                    }
+                    if (param) {
+                        updateScroll();
                     }
                 }
-                if (scroll) {
-                    updateScroll();
-                }
-
             },
             error: (response) => {
                 console.log(response)
@@ -185,9 +213,7 @@
             }
         });
     }
-    if (receiver) {
-        var timeout = setInterval(updateChat, 1000);
-    }
+
 
     function changeContact(id) {
         if (parseInt(id)) {
@@ -207,7 +233,7 @@
                     var view = $("#message-view");
                     var img = $("#contact_img");
                     var header = $("#contact_name");
-                    console.log(response.contact.name + " " + response.contact.surname)
+                    receiver = response.contact.id
                     header.empty();
                     header.append("<h4>" + response.contact.name + " " + response.contact.surname + "</h4>")
                     img.empty();
@@ -234,7 +260,7 @@
                             `)
                         }
                     };
-                    updateScroll();
+                    updateChat(true)
                 },
                 error: (response) => {
                     console.log(response)

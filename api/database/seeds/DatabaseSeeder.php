@@ -11,6 +11,12 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // $this->call(UsersTableSeeder::class);
+        $this->call([
+            RoleTableSeeder::class,
+            DiseaseTableSeeder::class,
+            UsersTableSeeder::class,
+            ChatsTableSeeder::class,
+            PDTableSeeder::class
+        ]);
     }
 }

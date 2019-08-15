@@ -74,7 +74,7 @@ Route::group([
     Route::get('/', 'PatientController@index')->name('patient.index');
     Route::get('/get_patient_doctors', 'PatientController@get_doctors')->name('patient.get_doctors');
 
-    Route::post('/add_patient_to_doctor', 'PatientController@add_doctor')
+    Route::post('/add_doctor_to_patient', 'PatientController@add_doctor')
         ->name('patient.add_doctor')
         ->middleware('isPatient');
     Route::delete('/{patient}', 'PatientController@destroy')->name('patient.destroy');
@@ -83,6 +83,7 @@ Route::group([
 
 
     Route::post('/', 'PatientController@store')->name('patient.store');
+    Route::post('/update', 'AuthController@update')->name('patient.update');
 });
 
 

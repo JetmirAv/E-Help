@@ -235,9 +235,6 @@
           },
           data: formInput,
           success: function(response) {
-            alert("response")
-            console.log(response)
-            alert(response)
             $.post('helpers/authorization.php', {
               token: response
             }, (e) => {

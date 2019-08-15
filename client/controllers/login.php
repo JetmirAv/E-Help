@@ -9,4 +9,4 @@ if (isset(($_SESSION['token']))) {
 }
 
 
-require('./login.php');
+require('./view/login.php');

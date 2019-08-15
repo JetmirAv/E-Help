@@ -1,2 +1,2 @@
 <?php 
-    require_once '.\\home.php';
+    require ('./view/home.php');

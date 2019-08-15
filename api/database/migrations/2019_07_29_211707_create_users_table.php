@@ -17,6 +17,7 @@ class CreateUsersTable extends Migration
             Schema::create('users', function (Blueprint $table) {
                 $table->bigIncrements('id');
                 $table->bigInteger('role_id')->unsigned()->index();
+                $table->bigInteger('doctor')->unsigned()->index()->nullable();
                 $table->string('name');
                 $table->string('surname');
                 $table->date('birthday');
@@ -34,6 +35,11 @@ class CreateUsersTable extends Migration
                     ->references('id')
                     ->on('roles')
                     ->onDelete('restrict')
+                    ->onUpdate('cascade');
+                $table->foreign('doctor')
+                    ->references('id')
+                    ->on('users')
+                    ->onDelete('set null')
                     ->onUpdate('cascade');
             });
     }

@@ -1,5 +1,3 @@
-
-
 <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
     <div class="container">
         <a href="/index" class="navbar-brand">E-Help</a>
@@ -19,18 +17,18 @@
                 </li>
                 <?php
                 if (!isset($_SESSION['token'])) {
-                        
+
                     ?>
-                    
-                    <li id="login" class="nav-item">
-                        <a href="/login" class="nav-link">login</a>
-                    </li>
+
+                <li id="login" class="nav-item">
+                    <a href="/login" class="nav-link">login</a>
+                </li>
                 <?php
                 } else {
                     ?>
-                    <li id="profile" class="nav-item">
-                        <a href="/profile" class="nav-link">Profile</a>
-                    </li>
+                <li id="profile" class="nav-item">
+                    <a href="/profile" class="nav-link">Profile</a>
+                </li>
 
                 <?php
                 }
@@ -42,17 +40,10 @@
                 if (isset($_SESSION['token'])) {
 
                     ?>
-                    <div class="dropdown">
-                        <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <?php
-                            echo $_SESSION['user_name']
-                            ?>
-                        </button>
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <a class="dropdown-item" href="/profile">Profile</a>
-                            <a id="logout" href="logout" class="dropdown-item">Logout</a>
-                        </div>
-                    </div>
+                <li id="profile" class="nav-item">
+                    <a id="logout" href="logout" class="nav-link btn btn-danger">Logout</a>
+                </li>
+
                 <?php
                 }
                 ?>

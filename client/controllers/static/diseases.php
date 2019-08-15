@@ -1,3 +1,3 @@
 <?php
 
-	require('./diseases.php');
+	require('./view/diseases.php');

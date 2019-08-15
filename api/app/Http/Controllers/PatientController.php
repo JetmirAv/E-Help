@@ -74,14 +74,13 @@ class PatientController extends Controller
     public function get_doctors()
     {
 
-        $doctors = auth()->user()->doctors;
-        $doctors_id = [];
-
-        foreach ($doctors as $doctor) {
-            array_push($doctors_id, $doctor->id);
+        $doctor = auth()->user()->Doctor;
+        $found_doctors = null;
+        if ($doctor) {
+            $found_doctors = User::select(['id', 'name', 'surname'])->where('role_id', 2)->whereNotIn('id', [$doctor->id])->get();
+        } else {
+            $found_doctors = User::select(['id', 'name', 'surname'])->where('role_id', 2)->get();
         }
-
-        $found_doctors = User::select(['name', 'surname', 'id'])->where('role_id', 2)->whereNotIn('id', $doctors_id)->get();
         return response()->json([
             'count' => $found_doctors
         ], 200);
@@ -89,13 +88,15 @@ class PatientController extends Controller
 
     public function add_doctor()
     {
-        $current_user = auth()->user()->id;
+        $current_user = auth()->user();
         $doctor_id = intval(request()->all()['doctor_id']);
-
-        DoctorPatient::create([
-            'patient' => $current_user,
-            'doctor' => $doctor_id
-        ]);
+        if ($current_user->role_id === 3) {
+            User::where('id', $current_user->id)->update(['doctor' => $doctor_id]);
+        } else {
+            return response()->json([
+                'success' => 'Doctor added successfuly'
+            ], 401);
+        }
 
         return response()->json([
             'success' => 'Doctor added successfuly'

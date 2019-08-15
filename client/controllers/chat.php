@@ -10,31 +10,36 @@ if (!isset($_SESSION['token'])) {
 }
 
 
-if (!isset($lastContact)) {
+$token = $_SESSION['token'];
+
+$header = "Authorization: Bearer "  . $_SESSION['token'];
+$response = json_decode(callAPI('GET', '/api/chat', false, $header), true);
 
 
-	$token = $_SESSION['token'];
+$contacts = $response['contacts'];
+$chats = $response['chats'];
+$role = $response['this_role'];
+$lastContact = null;
+if ($contacts) {
 
-	$header = "Authorization: Bearer "  . $_SESSION['token'];
-	$response = json_decode(callAPI('GET', '/api/chat', false, $header), true);
-
-
-	$contacts = $response['contacts'];
-	$chats = $response['chats'];
-	$lastContact = null;
-	if($contacts){
+	if ($role === 2) {
 		foreach ($contacts as $cont) {
 			if ($cont['id'] === $response['otherContact'])
 				$lastContact = $cont;
 		}
+		if($lastContact === null){
+			$lastContact = reset($contacts);
+		}
+	} else {
+		$lastContact = $contacts;
 	}
-	if($chats) {
-		$last_chat = end($chats);
-	}
+}
+if ($chats) {
+	$last_chat = end($chats);
 }
 
 
-if(!isset($lastContact)){
+if (!isset($lastContact)) {
 	$_SESSION['no_contact'] = true;
 }
 
@@ -45,4 +50,4 @@ if(!isset($lastContact)){
 
 
 
-require('./chat.php');
+require('./view/chat.php');
