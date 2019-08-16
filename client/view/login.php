@@ -21,11 +21,11 @@
             <form id="singninForm" action="#">
               <div class="form-group">
                 <label class="font-weight-bold">Email <span class="text-danger">*</span></label>
-                <input type="email" name="email" id="email" class="form-control" placeholder="Enter valid email" required>
+                <input type="email" name="email" id="email" class="form-control" placeholder="Enter valid email">
               </div>
               <div class="form-group">
                 <label class="font-weight-bold">Password <span class="text-danger">*</span></label>
-                <input type="password" name="password" id="password" class="form-control" placeholder="***********" required>
+                <input type="password" name="password" id="password" class="form-control" placeholder="***********">
               </div>
               <div class="form-group">
                 <div class="row">
@@ -58,11 +58,11 @@
                 <div class="row">
                   <div class="col">
                     <label class="font-weight-bold">First Name <span class="text-danger">*</span></label>
-                    <input type="text" name="signupFirstName" id="signupFirstName" class="form-control" placeholder="First Name" required>
+                    <input type="text" name="signupFirstName" id="signupFirstName" class="form-control" placeholder="First Name">
                   </div>
                   <div class="col">
                     <label class="font-weight-bold">First Name <span class="text-danger">*</span></label>
-                    <input type="text" name="signupLastName" id="signupLastName" class="form-control" placeholder="Last Name" required>
+                    <input type="text" name="signupLastName" id="signupLastName" class="form-control" placeholder="Last Name">
                   </div>
                 </div>
               </div>
@@ -77,7 +77,7 @@
                   </div>
                   <div class="col">
                     <label class="font-weight-bold">Email <span class="text-danger">*</span></label>
-                    <input type="email" name="signupEmail" id="signupEmail" class="form-control" placeholder="Enter valid email" required>
+                    <input type="email" name="signupEmail" id="signupEmail" class="form-control" placeholder="Enter valid email">
                   </div>
                 </div>
               </div>
@@ -85,11 +85,11 @@
                 <div class="row">
                   <div class="col">
                     <label class="font-weight-bold">Password <span class="text-danger">*</span></label>
-                    <input type="password" name="signupPassword" id="signupPassword" class="form-control" placeholder="***********" pattern="^\S{6,}$" onchange="this.setCustomValidity(this.validity.patternMismatch ? 'Must have at least 6 characters' : ''); if(this.checkValidity()) form.password_two.pattern = this.value;" required>
+                    <input type="password" name="signupPassword" id="signupPassword" class="form-control" placeholder="***********" pattern="^\S{6,}$" onchange="this.setCustomValidity(this.validity.patternMismatch ? 'Must have at least 6 characters' : ''); if(this.checkValidity()) form.password_two.pattern = this.value;">
                   </div>
                   <div class="col">
                     <label class="font-weight-bold">Confirm Password <span class="text-danger">*</span></label>
-                    <input type="password" name="signupCPassword" id="signupCPassword" class="form-control" pattern="^\S{6,}$" onchange="this.setCustomValidity(this.validity.patternMismatch ? 'Please enter the same Password as above' : '');" placeholder="***********" required>
+                    <input type="password" name="signupCPassword" id="signupCPassword" class="form-control" pattern="^\S{6,}$" onchange="this.setCustomValidity(this.validity.patternMismatch ? 'Please enter the same Password as above' : '');" placeholder="***********">
                   </div>
                 </div>
               </div>
@@ -146,7 +146,7 @@
             <div class="modal-body">
               <div class="form-group">
                 <label>Email <span class="text-danger">*</span></label>
-                <input type="email" name="forgotemail" id="forgotemail" class="form-control" placeholder="Enter your valid email..." required>
+                <input type="email" name="forgotemail" id="forgotemail" class="form-control" placeholder="Enter your valid email...">
               </div>
               <div class="form-group">
               </div>
@@ -185,8 +185,6 @@
           $.post('helpers/authorization.php', {
             token: response
           }, (e) => {
-            console.log(e);
-
             if (e)
               window.location.href = "/";
           })
@@ -202,55 +200,104 @@
 
     $('#singnupFrom').submit(function(e) {
       e.preventDefault()
-      console.log("signup")
+
       if (img) {
-        let formInput = {
-          email: $('#signupEmail').val(),
-          state: $('#signupState').val(),
-          postal: $('#signupPostal').val(),
-          phone_number: $('#signupPhone').val(),
-          name: $('#signupFirstName').val(),
-          surname: $('#signupLastName').val(),
-          address: $('#signupAddress').val(),
-          city: $('#signupCity').val(),
-          pos: $('#signupPosition').val(),
-          password: $('#signupPassword').val(),
-          password_confirmation: $('#signupCPassword').val(),
-          birthday: $('#signupBirthday').val(),
-          // img: img
-        }
-        console.log(img);
-
-
-        $.ajax({
-          url: 'http://127.0.0.1:8000/' + 'api/auth/register',
-          type: 'POST',
-          // contentType: 'multipart/form-data',
-          // processData : false, /// Add this line without processing parameters
-          contentType: false,
-          beforeSend: function(request) {
-            request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-            request.setRequestHeader("Accept", "application/json");
-            // console.log(request)
-          },
-          data: formInput,
-          success: function(response) {
+        var request = new XMLHttpRequest();
+        request.onreadystatechange = function() {
+          if (this.readyState == 4 && this.status == 200) {
             $.post('helpers/authorization.php', {
-              token: response
+              token: this.response
             }, (e) => {
               if (e)
                 window.location.href = "/";
             })
-          },
-          error: (response) => {
-            console.log(response)
-
           }
-        });
-      } else {
+        };
 
+        request.open('post', 'http://localhost:8000/api/auth/register')
+
+        var form = new FormData();
+        form.append("email", "final@mail.com");
+        form.append("state", "asdasd");
+        form.append("postal", "asdasd");
+        form.append("phone_number", "asdsad");
+        form.append("name", "asdasd");
+        form.append("surname", "asdasd");
+        form.append("address", "asdasd");
+        form.append("city", "asdasd");
+        form.append("pos", "2");
+        form.append("password", "Aa123456");
+        form.append("password_confirmation", "Aa123456");
+        form.append("birthday", "2019-08-06");
+        form.append('img', img);
+
+        request.send(form)
       }
 
+
+
+      // var settings = {
+      //   "async": true,
+      //   "crossDomain": true,
+      //   "url": "http://localhost:8000/api/auth/register",
+      //   "method": "POST",
+      //   "headers": {
+      //     "Content-Type": "application/x-www-form-urlencoded",
+      //     "User-Agent": "PostmanRuntime/7.15.2",
+      //     "Accept": "*/*",
+      //     "Cache-Control": "no-cache",
+      //     "cache-control": "no-cache"
+      //   },
+      //   "processData": false,
+      //   "contentType": false,
+      //   "mimeType": "multipart/form-data",
+      //   "data": form
+      // }
+
+
+      // $.ajax(settings).done(function(response) {
+      //   console.log("SUCCESS");
+      //   console.log(response);
+
+      // $.post('helpers/authorization.php', {
+      //   token: response
+      // }, (e) => {
+      //   console.log(e);
+
+      //   if (e)
+      //     window.location.href = "/";
+      // })
+      // });
+
+      // console.log(formInput)
+      // $.ajax({
+      //   url: 'http://127.0.0.1:8000/' + 'api/auth/register',
+      //   type: 'POST',
+      //   beforeSend: function(request) {
+      //     request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+      //     request.setRequestHeader("Accept", "application/json");
+      //   },
+      //   processData: false,
+      //   data: formInput,
+      //   success: function(response) {
+      //     console.log("SUCCESS");
+      //     console.log(response);
+
+      // $.post('helpers/authorization.php', {
+      //   token: response
+      // }, (e) => {
+      //   console.log(e);
+
+      //   if (e)
+      //     window.location.href = "/";
+      // })
+      //   },
+      //   error: (response) => {
+      //     console.log("ERROR")
+      //     console.log(response)
+
+      //   }
+      // });
     })
 
     function profileUpload() {

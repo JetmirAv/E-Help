@@ -7,55 +7,81 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Http\Resources\DoctorResource;
 use App\Http\Resources\PatientResource;
+use App\Traits\FileUploadTrait;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
+    use FileUploadTrait;
 
     public function __construct()
     {
         $this->middleware('auth:api', ['except' => ['login', 'register']]);
+        $this->middleware('cors');
     }
-    public function register()
+    public function register(Request $request)
     {
 
-        request()->validate([
-            // 'img' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        $val = Validator::make($request->all(), [
+            'img' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:10000',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|confirmed|min:8',
             'state' => 'required',
             'postal' => 'required',
             'phone_number' => 'required',
-            'name' => 'required|',
-            'surname' => 'required|',
-            'address' => 'required|',
-            'city' => 'required|',
-            'pos' => 'required|',
+            'name' => 'required',
+            'surname' => 'required',
+            'address' => 'required',
+            'city' => 'required',
+            'pos' => 'required',
             'birthday' => 'required|date',
         ]);
 
-        $data = request()->except('img');
-        $data['role_id'] = (int) $data['pos'] === 2 ? 2 : 3;
+        if ($val->passes()) {
 
-        $user = User::create($data);
+            $data = $request->except('img');
+            
+            if ($request->hasFile('img')) {
 
-        $credentials = request(['email', 'password']);
-        if (!$token = auth()->attempt($credentials, ['exp' => Carbon::now()->addDays(7)->timestamp])) {
-            return response()->json(['error' => 'Unauthorized'], 401);
+                $name = $this->upload($request->img);
+                $data['img'] = $name;
+            
+            }
+
+            $data['role_id'] = (int) $data['pos'] === 2 ? 2 : 3;
+
+            $user = User::create($data);
+
+            return $this->login($request);
+
+            // $credentials = request(['email', 'password']);
+
+            // if (!$token = auth()->attempt($credentials, ['exp' => Carbon::now()->addDays(7)->timestamp])) {
+            //     return response()->json(['error' => 'Unauthorized'], 401);
+            // }
+            // return $this->respondWithToken($token, $user);
+        } else {
+            return $val->errors()->all();
         }
 
-        return $this->respondWithToken($token, $user);
+
+
+        $data['role_id'] = 3;
+
+
 
         // $this->login();
 
     }
-    public function update()
+    public function update(Request $request)
     {
 
         error_log(auth()->user()->email);
 
-        
-        if(auth()->user()->email === strtolower(request(['email'])['email'])){
+
+        if (auth()->user()->email === strtolower(request(['email'])['email'])) {
             request()->validate([
                 // 'img' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
                 'password' => 'min:8|nullable',
@@ -73,7 +99,7 @@ class AuthController extends Controller
 
         $data = request()->except('img');
 
-        if(!$data['password']){
+        if (!$data['password']) {
             unset($data['password']);
         }
 
@@ -83,11 +109,10 @@ class AuthController extends Controller
         return response()->json([
             'user' => $user
         ]);
-
     }
-    public function login()
+    public function login(Request $request)
     {
-        $credentials = request(['email', 'password']);
+        $credentials = $request->only('email', 'password');
 
         if (!$token = auth()->attempt($credentials, ['exp' => Carbon::now()->addDays(7)->timestamp])) {
             return response()->json(['error' => 'Unauthorized'], 401);

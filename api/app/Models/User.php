@@ -68,12 +68,15 @@ class User extends Authenticatable implements JWTSubject
     }   
 
 
-    public function getEmailAttribute($email)
+    public function getEmailAttribute()
     {
-        if ( !empty($email) ) {
-            return strtolower($email);
-        }
+            return strtolower($this->email);
     }  
+
+    public function getImgAttribute()
+    {
+            return "public/user-images" . ($this->img);
+    } 
 
     public function role(){
         return $this->belongsTo(Role::class, 'role_id');

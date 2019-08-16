@@ -3,9 +3,11 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-
+use App\Traits\FileUploadTrait;
+ 
 class DoctorResource extends JsonResource
 {
+    use FileUploadTrait;
     /**
      * Transform the resource into an array.
      *
