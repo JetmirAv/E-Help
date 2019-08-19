@@ -17,6 +17,7 @@ class CreateDiseasesTable extends Migration
             Schema::create('diseases', function (Blueprint $table) {
                 $table->bigIncrements('id');
                 $table->string("name")->unique()->index();
+                $table->string("img");
                 $table->text('description');
                 $table->timestamps();
             });

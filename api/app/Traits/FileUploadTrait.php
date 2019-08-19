@@ -10,12 +10,13 @@ trait FileUploadTrait
     {
         $path = $file->store($directory, $disk);
 
+
         return $this->getFilename($path);
     }
 
-    protected function delete($file, $directory = 'public', $disk = "local")
+    protected function delete($file, $directory = 'public/user-images', $disk = "local")
     {
-        return Storage::disk($disk)->delete($file);
+        return Storage::disk($disk)->delete($directory . $file);
     }
 
     public function getFilename($path)

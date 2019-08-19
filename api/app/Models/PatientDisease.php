@@ -12,16 +12,13 @@ class PatientDisease extends Model
     ];
 
     public function patient(){
-        return $this->belongsTo('App\Models\User', 'patient');
+        return $this->belongsTo(User::class, 'patient');
     }
 
 
     public function disease(){
-        return $this->belongsTo('App\Models\Diseases', 'disease');
+        return $this->belongsTo(Diseases::class, 'disease');
     }
 
 
-    public function documents(){
-        return $this->hasMany('App\Models\DiseaseDocs', 'disease_id');
-    }
 }

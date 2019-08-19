@@ -55,7 +55,7 @@
         </div>
     </section>
 	<section class="container mb-5 pb-5">
-		<div class="row bg-dark">
+		<div id="2" class="row bg-dark">
             <h3 class="text-light my-1 ml-3 w-100 ">Diabeti</h3>
         </div>
 		<div class="row">
@@ -96,7 +96,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="row bg-dark">
+		<div id="1" class="row bg-dark">
             <h3 class="text-light my-1 ml-3 w-100 ">Hepatiti</h3>
         </div>
 		<div class="row">
@@ -137,7 +137,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="row bg-dark">
+		<div id="3" class="row bg-dark">
             <h3 class="text-light my-1 ml-3 w-100 ">Hipertensioni</h3>
         </div>
 		<div class="row">
@@ -178,7 +178,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="row bg-dark">
+		<div id="4" class="row bg-dark">
             <h3 class="text-light my-1 ml-3 w-100 ">Lupus</h3>
         </div>
 		<div class="row">

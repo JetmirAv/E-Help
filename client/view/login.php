@@ -59,8 +59,7 @@
                   <div class="col">
                     <label class="font-weight-bold">First Name <span class="text-danger">*</span></label>
                     <input type="text" name="signupFirstName" id="signupFirstName" class="form-control" placeholder="First Name">
-                  </div>
-                  <div class="col">
+                  </dSurn                <div class="col">
                     <label class="font-weight-bold">First Name <span class="text-danger">*</span></label>
                     <input type="text" name="signupLastName" id="signupLastName" class="form-control" placeholder="Last Name">
                   </div>
@@ -205,6 +204,7 @@
         var request = new XMLHttpRequest();
         request.onreadystatechange = function() {
           if (this.readyState == 4 && this.status == 200) {
+
             $.post('helpers/authorization.php', {
               token: this.response
             }, (e) => {
@@ -217,87 +217,22 @@
         request.open('post', 'http://localhost:8000/api/auth/register')
 
         var form = new FormData();
-        form.append("email", "final@mail.com");
-        form.append("state", "asdasd");
-        form.append("postal", "asdasd");
-        form.append("phone_number", "asdsad");
-        form.append("name", "asdasd");
-        form.append("surname", "asdasd");
-        form.append("address", "asdasd");
-        form.append("city", "asdasd");
-        form.append("pos", "2");
-        form.append("password", "Aa123456");
-        form.append("password_confirmation", "Aa123456");
-        form.append("birthday", "2019-08-06");
+        form.append("email", $("#signupEmail").val());
+        form.append("state", $("#signupState").val());
+        form.append("postal", $("#signupPosta").val());
+        form.append("phone_number", $("#signupPhone").val());
+        form.append("name", $("#signupFirstName").val());
+        form.append("surname", $("#signupLastName").val());
+        form.append("address", $("#signupAddress").val());
+        form.append("city", $("#signupCity").val());
+        form.append("pos", $("#signupPos").val());
+        form.append("password", $("#signupPassword").val());
+        form.append("password_confirmation", $("#signupCPassword").val());
+        form.append("birthday", $("#signupBirthday").val());
         form.append('img', img);
 
         request.send(form)
       }
-
-
-
-      // var settings = {
-      //   "async": true,
-      //   "crossDomain": true,
-      //   "url": "http://localhost:8000/api/auth/register",
-      //   "method": "POST",
-      //   "headers": {
-      //     "Content-Type": "application/x-www-form-urlencoded",
-      //     "User-Agent": "PostmanRuntime/7.15.2",
-      //     "Accept": "*/*",
-      //     "Cache-Control": "no-cache",
-      //     "cache-control": "no-cache"
-      //   },
-      //   "processData": false,
-      //   "contentType": false,
-      //   "mimeType": "multipart/form-data",
-      //   "data": form
-      // }
-
-
-      // $.ajax(settings).done(function(response) {
-      //   console.log("SUCCESS");
-      //   console.log(response);
-
-      // $.post('helpers/authorization.php', {
-      //   token: response
-      // }, (e) => {
-      //   console.log(e);
-
-      //   if (e)
-      //     window.location.href = "/";
-      // })
-      // });
-
-      // console.log(formInput)
-      // $.ajax({
-      //   url: 'http://127.0.0.1:8000/' + 'api/auth/register',
-      //   type: 'POST',
-      //   beforeSend: function(request) {
-      //     request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-      //     request.setRequestHeader("Accept", "application/json");
-      //   },
-      //   processData: false,
-      //   data: formInput,
-      //   success: function(response) {
-      //     console.log("SUCCESS");
-      //     console.log(response);
-
-      // $.post('helpers/authorization.php', {
-      //   token: response
-      // }, (e) => {
-      //   console.log(e);
-
-      //   if (e)
-      //     window.location.href = "/";
-      // })
-      //   },
-      //   error: (response) => {
-      //     console.log("ERROR")
-      //     console.log(response)
-
-      //   }
-      // });
     })
 
     function profileUpload() {

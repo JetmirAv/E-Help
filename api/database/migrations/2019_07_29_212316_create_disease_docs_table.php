@@ -13,12 +13,32 @@ class CreateDiseaseDocsTable extends Migration
      */
     public function up()
     {
-        if (!Schema::hasTable('disease_docs'))
-            Schema::create('disease_docs', function (Blueprint $table) {
+        if (!Schema::hasTable('receipts'))
+            Schema::create('receipts', function (Blueprint $table) {
                 $table->bigIncrements('id');
-                $table->string('path');
+                $table->bigInteger('doctor_id')->unsigned()->index()->nullable();
+                $table->bigInteger('patient_id')->unsigned()->index()->nullable();
                 $table->bigInteger('disease_id')->unsigned()->index()->nullable();
+                $table->longText('content');
                 $table->timestamps();
+                
+                $table->foreign('doctor_id')
+                ->references('id')
+                ->on('users')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
+
+                $table->foreign('patient_id')
+                ->references('id')
+                ->on('users')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
+
+                $table->foreign('disease_id')
+                ->references('id')
+                ->on('diseases')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
             });
     }
 
@@ -29,6 +49,6 @@ class CreateDiseaseDocsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('disease_docs');
+        Schema::dropIfExists('receipts');
     }
 }

@@ -4,7 +4,9 @@ namespace App\Models;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Facades\Validator;
 use Tymon\JWTAuth\Contracts\JWTSubject;
+use Storage;
 
 
 class User extends Authenticatable implements JWTSubject
@@ -68,14 +70,21 @@ class User extends Authenticatable implements JWTSubject
     }   
 
 
-    public function getEmailAttribute()
+    public function getEmailAttribute($email)
     {
-            return strtolower($this->email);
+            return strtolower($email);
     }  
 
-    public function getImgAttribute()
+    public function getImgAttribute($img)
     {
-            return "public/user-images" . ($this->img);
+        $url = Validator::make(['img' => $img], [
+            'img' => 'url'
+        ]);
+
+        if($url->passes()){
+            return $img;
+        }
+        return base64_encode(Storage::get("public/user-images/$img")); 
     } 
 
     public function role(){

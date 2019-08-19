@@ -3,23 +3,51 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\PatientDoctor;
+use App\Http\Resources\PatientResource;
+use App\Http\Resources\ReceiptResource;
 use Illuminate\Http\Request;
 
 use App\Models\User;
 use App\Models\DoctorPatient;
+use App\Models\Receipt;
 
 class PatientController extends Controller
 {
 
+    
+
     public function __construct()
     {
         $this->middleware('auth:api');
+        $this->middleware('cors');        
     }
 
     public function index()
     {
         return PatientResource::collection(User::all()->where('role_id', '=', 3));
     }
+
+    public function see_receipts(Request $request)
+    {
+        
+        $current_user = auth()->user();
+        $receipts = null;
+        if($current_user->role_id === 2){
+            $receipts = ReceiptResource::collection(Receipt::where([
+                'doctor_id' => $current_user->id, 
+                'patient_id' => $request->patient_id,
+                'disease_id' => $request->disease_id
+                ])->get());
+        } else {
+            $receipts =  ReceiptResource::collection(Receipt::where([
+                'patient_id' => $current_user->id, 
+                'disease_id' => $request->disease_id
+                ])->get());
+        }
+        return response()->json([
+            'receipts' => $receipts 
+        ]);
+    }   
 
     public function store(Request $request)
     {
@@ -60,6 +88,8 @@ class PatientController extends Controller
 
         $patient->update($request->all());
 
+        
+        
         return new PatientResource($patient);
     }
 

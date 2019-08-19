@@ -13,10 +13,10 @@ class Chats extends Model
     ];
 
     public function sender(){
-        return $this->belongsTo('App\Models\User', 'sender');
+        return $this->belongsTo(User::class, 'sender');
     }
 
     public function receiver(){
-        return $this->belongsTo('App\Models\User', 'receiver');
+        return $this->belongsTo(User::class, 'receiver');
     }
 }

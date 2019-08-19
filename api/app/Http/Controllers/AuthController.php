@@ -78,37 +78,56 @@ class AuthController extends Controller
     public function update(Request $request)
     {
 
-        error_log(auth()->user()->email);
+
+        $rules = [
+            'email' => 'required|email|unique:users,email',
+            'state' => 'required',
+            'postal' => 'required',
+            'phone_number' => 'required',
+            'name' => 'required',
+            'surname' => 'required',
+            'address' => 'required',
+            'city' => 'required',
+            'pos' => 'required',
+            'birthday' => 'required|date',
+        ];
+        $data = request()->all();
+
+        !$request->hasFile('img')  ? null : $rules['img'] = 'required|image|mimes:jpeg,png,jpg,gif,svg|max:10000';        
+        !$data['password'] ? null : $rules['password'] = 'required|min:8';
+
+        $val = Validator::make($request->all(), $rules);
 
 
-        if (auth()->user()->email === strtolower(request(['email'])['email'])) {
-            request()->validate([
-                // 'img' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-                'password' => 'min:8|nullable',
-                'birthday' => 'date',
+        if($val->passes()){
+
+            $user = User::find(auth()->user()->id);
+
+            if (!$data['password']) {
+                unset($data['password']);
+            }
+
+            if ($request->hasFile('img')) {
+
+                $this->delete($user->img);
+                $name = $this->upload($request->img);
+                $data['img'] = $name;
+            
+            }
+
+            $user->update($data);
+            
+            $user = User::find(auth()->user()->id)->first();
+    
+            return response()->json([
+                'user' => $user
             ]);
-        } else {
-            request()->validate([
-                // 'img' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-                'email' => '|email|unique:users,email',
-                'password' => 'min:8|nullable',
-                'birthday' => 'date',
-            ]);
+
         }
+        
 
 
-        $data = request()->except('img');
 
-        if (!$data['password']) {
-            unset($data['password']);
-        }
-
-        $user = User::find(auth()->user()->id)->update($data);
-        $user = User::find(auth()->user()->id)->first();
-
-        return response()->json([
-            'user' => $user
-        ]);
     }
     public function login(Request $request)
     {
@@ -121,9 +140,10 @@ class AuthController extends Controller
         return $this->respondWithToken($token, auth()->user($token));
     }
 
-    public function me()
+    public function me(Request $request)
     {
         $user = auth()->user();
+
 
         if ($user->role_id === 2) {
             $user = new DoctorResource($user);

@@ -38,7 +38,7 @@ use Illuminate\Http\Request;
 
 Route::group([
 
-    // 'middleware' => ['api', 'cors'],
+    'middleware' => 'api',
     'prefix' => 'auth'
 
 ], function ($router) {
@@ -47,6 +47,7 @@ Route::group([
     Route::post('register', 'AuthController@register');
     Route::post('logout', 'AuthController@logout');
     Route::post('refresh', 'AuthController@refresh');
+    Route::post('update', 'AuthController@update');
     Route::post('me', 'AuthController@me');
 });
 
@@ -58,11 +59,19 @@ Route::group([
 ], function () {
 
     Route::get('/', 'DoctorController@index')->name('doctor.index')->middleware('isAdmin');
+    Route::get('/get_diseases', 'DoctorController@get_diseases');
 
     Route::delete('/{doctor}', 'DoctorController@destroy')->name('doctor.destroy');
+
     Route::match(['put', 'patch'], '/{doctor}', 'DoctorController@update')->name('doctor.update');
     Route::match(['get', 'head'], '/{doctor}', 'DoctorController@show')->name('doctor.show');
+    
     Route::post('/', 'DoctorController@store')->name('doctor.store');
+    Route::post('/add_receipt', 'DoctorController@add_receipt')->name('doctor.add_receipt');
+    Route::post('/add_disease_to_patient', 'DoctorController@add_disease')->name('doctor.add_disease');
+
+
+    
 });
 
 
@@ -81,9 +90,9 @@ Route::group([
     Route::match(['put', 'patch'], '/{patient}', 'PatientController@update')->name('patient.update');
     Route::match(['get', 'head'], '/{patient}', 'PatientController@show')->name('patient.show');
 
-
+    
     Route::post('/', 'PatientController@store')->name('patient.store');
-    Route::post('/update', 'AuthController@update')->name('patient.update');
+    Route::post('/see_receipts', 'PatientController@see_receipts')->name('patient.see_receipts');
 });
 
 

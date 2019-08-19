@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Log;
 
 class CORSMiddleware
 {
@@ -21,7 +22,8 @@ class CORSMiddleware
         // if ($this->isPreflightRequest($request)) {
         //     $response = $this->createEmptyResponse();
         // } else {
-        $request = $this->addCorsHeaders($request);    
+        Log::info("Ckemi cors");    
+        $request = $this->addCorsHeaders($request);
         $response = $next($request);
         // }
 

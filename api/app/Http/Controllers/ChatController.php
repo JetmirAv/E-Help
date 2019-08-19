@@ -8,6 +8,12 @@ use App\Models\{User, Chats, DoctorPatient};
 
 class ChatController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('cors');        
+    }
+
     public function index()
     {
         $user = auth()->user();
@@ -39,9 +45,6 @@ class ChatController extends Controller
                 ->orderBy('created_at', 'asc')
                 ->get();
         }
-
-
-
         return response()->json([
             'this_role' => $user->role_id,
             'contacts' => $contacts,
@@ -130,9 +133,6 @@ class ChatController extends Controller
             if ($relation === null) {
                 return response()->json(['error' => 'Could not find this contact'], 404);
             }
-
-
-            
         }
 
         $chats = Chats::where(function ($query) use ($current_user, $other_contact) {
