@@ -8,7 +8,7 @@
     <?php require_once '.\\components\\nav.php' ?>
     <div class="hero-image">
         <div class="hero-text">
-            <h1>E - HELP</h1>
+            <h1>E - Health</h1>
             <p>Revolucion ne fushen e mjeksise</p>
             <a href="/diseases" class="btn btn-secondary">Shiko me shume</a>
         </div>
