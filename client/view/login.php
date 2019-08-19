@@ -43,7 +43,7 @@
             </form>
           </div>
         </div>
-        <div class="tab-pane fade" id="pills-signup" role="tabpanel" aria-labelledby="pills-signup-tab">
+        <div class="tab-pane fade mb-5 pb-5" id="pills-signup" role="tabpanel" aria-labelledby="pills-signup-tab">
           <div class="col-sm-12 border border-dark shadow rounded pt-2">
 
 
@@ -204,12 +204,12 @@
         var request = new XMLHttpRequest();
         request.onreadystatechange = function() {
           if (this.readyState == 4 && this.status == 200) {
-
+            console.log(this.response)
             $.post('helpers/authorization.php', {
               token: this.response
             }, (e) => {
               if (e)
-                window.location.href = "/";
+                console.log(e)
             })
           }
         };

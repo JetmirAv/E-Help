@@ -78,6 +78,7 @@ class AuthController extends Controller
     public function update(Request $request)
     {
 
+        
 
         $rules = [
             'email' => 'required|email|unique:users,email',
@@ -91,6 +92,7 @@ class AuthController extends Controller
             'pos' => 'required',
             'birthday' => 'required|date',
         ];
+
         $data = request()->all();
 
         !$request->hasFile('img')  ? null : $rules['img'] = 'required|image|mimes:jpeg,png,jpg,gif,svg|max:10000';        
@@ -98,7 +100,9 @@ class AuthController extends Controller
 
         $val = Validator::make($request->all(), $rules);
 
-
+        // return response()->json([
+        //     'req' => $val->passes()
+        // ]);
         if($val->passes()){
 
             $user = User::find(auth()->user()->id);
@@ -109,7 +113,6 @@ class AuthController extends Controller
 
             if ($request->hasFile('img')) {
 
-                $this->delete($user->img);
                 $name = $this->upload($request->img);
                 $data['img'] = $name;
             

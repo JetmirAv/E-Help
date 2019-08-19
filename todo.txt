@@ -1,2 +1,0 @@
-register -- token
-content --- receipt

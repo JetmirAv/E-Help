@@ -54,16 +54,15 @@
 
 <script>
     $('#logout').click(e => {
-        console.log('ckemi')
         e.preventDefault();
-        $.post('helpers/authorization.php', {
+        $.post('../helpers/authorization.php', {
             logout: true
         }, (e) => {
-            window.location.href = "login";
+            window.location.href = "/login";
         })
     })
 
-    // pills-signin
+
 
     let path = window.location.pathname.split('/');
     if (path.includes('index')) {
@@ -80,7 +79,10 @@
         document.getElementById("about").setAttribute('class', 'active')
     } else if (path.includes('profile')) {
         document.getElementById("profile").setAttribute('class', 'active')
+    } else if (path.includes('patient')) {
+        document.getElementById("profile").setAttribute('class', 'active')
     } else {
         document.getElementById("index").setAttribute('class', 'active')
     }
+
 </script>

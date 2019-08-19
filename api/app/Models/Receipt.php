@@ -14,14 +14,14 @@ class Receipt extends Model
     ];
 
     public function disease(){
-        return $this->belongsTo(Diseases::class, 'id');
+        return $this->belongsTo(Diseases::class, 'disease_id', 'id');
     }
     
     public function patient(){
-        return $this->belongsTo(User::class, 'id');
+        return $this->belongsTo(User::class, 'patient_id', 'id');
     }
 
     public function doctor(){
-        return $this->belongsTo(User::class, 'id');
+        return $this->belongsTo(User::class, 'doctor_id', 'id');
     }
 }
