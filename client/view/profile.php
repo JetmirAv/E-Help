@@ -79,12 +79,14 @@ if (!isset(($_SESSION['token']))) {
                                         <input type="email" class="form-control" id="update_email" value="<?= $response['email'] ?>">
                                     </div>
                                 </div>
+                                <?php if($response['id'] == $_SESSION['user_id']){ ?>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="password">Password:</label>
                                         <input type="password" class="form-control" id="update_password">
                                     </div>
                                 </div>
+                                <?php }?>
                             </div>
                             <br>
                             <h5 class="text-muted">Address Information</h5>
@@ -118,9 +120,11 @@ if (!isset(($_SESSION['token']))) {
                                     </div>
                                 </div>
                             </div>
+                            <?php if($response['id'] == $_SESSION['user_id']){ ?>
                             <div class="col-md-12 d-flex justify-content-end">
                                 <input type="submit" value="Save" class="btn btn-primary btn-180" />
                             </div>
+                            <?php }?>
                         </div>
                     </div>
                 </div>
@@ -358,7 +362,6 @@ if (!isset(($_SESSION['token']))) {
 
         function changeDisease(id) {
             disease_id = id;
-            console.log(disease_id);
         }
         $('#profile_image_place').click(e => {
             $('#img').click()
@@ -378,7 +381,7 @@ if (!isset(($_SESSION['token']))) {
 
         function seeReceipts(id) {
             $("#receiptShowModalContent").empty()
-
+            $("#diseaseTitleReceipt").empty();
             $.ajax({
                 url: 'http://127.0.0.1:8000/' + 'api/patient/see_receipts',
                 type: 'POST',
@@ -389,11 +392,10 @@ if (!isset(($_SESSION['token']))) {
                 },
                 data: {
                     disease_id: id,
-                    patient_id: <?= $response['id'] ?>
+                    patient_id: <?= !$response['id'] ? null : $response['id'] ?>
                 },
                 success: function(response) {
                     data = response.receipts
-                    console.log(data)
                     if (data) {
                         $("#diseaseTitleReceipt").append(`
                             ${data[0].disease.name} from Dr.${data[0].doctor.name}
@@ -422,7 +424,6 @@ if (!isset(($_SESSION['token']))) {
                     }
                 },
                 error: (response) => {
-                    console.log(response)
 
                 }
             });
@@ -440,7 +441,6 @@ if (!isset(($_SESSION['token']))) {
                     request.setRequestHeader("Authorization", "Bearer " + "<?= $_SESSION['token'] ?>");
                 },
                 success: function(response) {
-                    console.log(response)
                     let data = response.diseases
                     $("#diseaseControl").empty()
                     $("#diseaseControl").append(`
@@ -453,7 +453,6 @@ if (!isset(($_SESSION['token']))) {
                     })
                 },
                 error: (response) => {
-                    console.log(response)
 
                 }
             });
@@ -481,7 +480,6 @@ if (!isset(($_SESSION['token']))) {
                     })
                 },
                 error: (response) => {
-                    console.log(response)
 
                 }
             });
@@ -507,7 +505,6 @@ if (!isset(($_SESSION['token']))) {
                     }
                 },
                 error: (response) => {
-                    console.log(response)
 
                 }
             });
@@ -532,7 +529,6 @@ if (!isset(($_SESSION['token']))) {
                     }
                 },
                 error: (response) => {
-                    console.log(response)
 
                 }
             });
@@ -561,7 +557,6 @@ if (!isset(($_SESSION['token']))) {
                     }
                 },
                 error: (response) => {
-                    console.log(response)
 
                 }
             })
@@ -575,16 +570,12 @@ if (!isset(($_SESSION['token']))) {
             var request = new XMLHttpRequest();
             request.onreadystatechange = function() {
                 if (this.readyState == 4 && this.status == 200) {
-                    $.post('helpers/update_user.php', {
-                        user: this.response
-                    }, (e) => {
-                        if (e)
-                            window.location.reload()
-                    })
+                    window.location.reload()
                 }
             };
 
             request.open('post', 'http://localhost:8000/api/auth/update')
+            request.setRequestHeader('Authorization', "<?= "Bearer " . $_SESSION['token']; ?>")
 
             var form = new FormData();
             form.append('email', $('#update_email').val())
@@ -603,7 +594,7 @@ if (!isset(($_SESSION['token']))) {
 
             request.send(form)
 
-            
+
 
 
         })

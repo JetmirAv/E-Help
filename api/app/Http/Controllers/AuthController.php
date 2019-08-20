@@ -19,7 +19,7 @@ class AuthController extends Controller
     public function __construct()
     {
         $this->middleware('auth:api', ['except' => ['login', 'register']]);
-        $this->middleware('cors');
+        // $this->middleware('cors');
     }
     public function register(Request $request)
     {
@@ -42,12 +42,11 @@ class AuthController extends Controller
         if ($val->passes()) {
 
             $data = $request->except('img');
-            
+
             if ($request->hasFile('img')) {
 
                 $name = $this->upload($request->img);
                 $data['img'] = $name;
-            
             }
 
             $data['role_id'] = (int) $data['pos'] === 2 ? 2 : 3;
@@ -63,7 +62,9 @@ class AuthController extends Controller
             // }
             // return $this->respondWithToken($token, $user);
         } else {
-            return $val->errors()->all();
+            return response()->json([
+                'errors' => $val->errors()->all()
+            ], 400);
         }
 
 
@@ -78,10 +79,8 @@ class AuthController extends Controller
     public function update(Request $request)
     {
 
-        
 
         $rules = [
-            'email' => 'required|email|unique:users,email',
             'state' => 'required',
             'postal' => 'required',
             'phone_number' => 'required',
@@ -89,21 +88,20 @@ class AuthController extends Controller
             'surname' => 'required',
             'address' => 'required',
             'city' => 'required',
-            'pos' => 'required',
             'birthday' => 'required|date',
         ];
 
         $data = request()->all();
 
-        !$request->hasFile('img')  ? null : $rules['img'] = 'required|image|mimes:jpeg,png,jpg,gif,svg|max:10000';        
+        !$request->hasFile('img')  ? null : $rules['img'] = 'required|image|mimes:jpeg,png,jpg,gif,svg|max:10000';
         !$data['password'] ? null : $rules['password'] = 'required|min:8';
+
+
 
         $val = Validator::make($request->all(), $rules);
 
-        // return response()->json([
-        //     'req' => $val->passes()
-        // ]);
-        if($val->passes()){
+
+        if ($val->passes()) {
 
             $user = User::find(auth()->user()->id);
 
@@ -111,26 +109,35 @@ class AuthController extends Controller
                 unset($data['password']);
             }
 
+            if ($user->email !== $data['email']) {
+                $val = Validator::make(['email' => $data->email], ['email' => 'required|email|unique:users,email']);
+                if (!$val->passes()) {
+                    return response()->json([
+                        'error' => $val->errors()->all()
+                    ], 400);
+                }
+            }
+
             if ($request->hasFile('img')) {
 
                 $name = $this->upload($request->img);
                 $data['img'] = $name;
-            
+            } else {
+                unset($data['img']);
             }
 
             $user->update($data);
-            
+
             $user = User::find(auth()->user()->id)->first();
-    
+
             return response()->json([
                 'user' => $user
-            ]);
-
+            ], 200);
+        } else {
+            return response()->json([
+                'error' => $val->errors()->all()
+            ], 400);
         }
-        
-
-
-
     }
     public function login(Request $request)
     {

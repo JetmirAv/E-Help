@@ -9,6 +9,6 @@ $header = "Authorization: Bearer "  . $_SESSION['token'];
 $response = json_decode(callAPI('GET', '/api/patient/' . $id, false, $header), true)['data'];
 
 
-// print_r($header);
+// print_r($response);
 
 require('./view/profile.php');

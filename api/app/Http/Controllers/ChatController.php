@@ -9,11 +9,6 @@ use App\Models\{User, Chats, DoctorPatient};
 class ChatController extends Controller
 {
 
-    public function __construct()
-    {
-        $this->middleware('cors');        
-    }
-
     public function index()
     {
         $user = auth()->user();

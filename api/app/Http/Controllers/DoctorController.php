@@ -14,11 +14,7 @@ use Illuminate\Support\Facades\Log;
 class DoctorController extends Controller
 {
 
-    public function __construct()
-    {
-        $this->middleware('cors');
-    }
-
+   
     public function index()
     {
         return DoctorResource::collection(User::all()->where('role_id', '=', 2));

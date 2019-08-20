@@ -19,7 +19,7 @@
                                 foreach ($contacts as $contact) : ?>
                         <div onclick="changeContact(<?= intval($contact['id']) ?>)" class="row mx-1 my-1 rounded" style="background: #ddd; height: 80px">
                             <div class="profile-pic-message">
-                                <img src="<?= $contact['img'] ?>" alt="" class="img-fluid rounded">
+                                <img src="<?= 'data:image/jpeg;base64,' .  $contact['img'] ?>" alt="" class="img-fluid rounded">
                             </div>
                             <div class="pt-2 pl-2 user-message">
                                 <h6><?= $contact['name'] ?></h6>
@@ -38,7 +38,7 @@
                                 ?>
                         <div onclick="changeContact(<?= intval($contacts['id']) ?>)" class="row mx-1 my-1 rounded" style="background: #ddd; height: 80px">
                             <div class="profile-pic-message">
-                                <img src="<?= $contacts['img'] ?>" alt="" class="img-fluid rounded">
+                                <img src="<?= 'data:image/jpeg;base64,' .  $contacts['img'] ?>" alt="" class="img-fluid rounded">
                             </div>
                             <div class="pt-2 pl-2 user-message">
                                 <h6><?= $contacts['name'] ?></h6>
@@ -58,7 +58,7 @@
                 <div class="col p-2 message-main" style="border:#343A40 1px solid; padding: 5px">
                     <div class="row ">
                         <div id="contact_img" class="col d-flex justify-content-start">
-                            <img src="<?= $lastContact['img'] ?>" alt="" class="img-fluid rounded">
+                            <img src="<?= 'data:image/jpeg;base64,' .  $lastContact['img'] ?>" alt="" class="img-fluid rounded">
                         </div>
                         <div class="col-md-11">
                             <h4 id="contact_name"><?= $lastContact === null ? "No chat has been made" : $lastContact['name'] . " " . $lastContact['surname'] ?></h4>
@@ -110,7 +110,6 @@
 <script>
     let receiver, last_fetched_id = null
     <?php if ($lastContact !== null) { ?>
-    console.log("ckemmi")
     receiver = "<?= $lastContact['id'] ?>"
     <?php if ($chats) { ?>
     last_fetched_id = "<?= $last_chat['id'] ?>"
@@ -135,7 +134,6 @@
 
     $('#send_message_form').submit(function(e) {
         e.preventDefault()
-        console.log("po")
         clearInterval(timeout)
         var content = $('#message_content').val()
         $('#message_content').val('');
@@ -152,13 +150,11 @@
                 receiver: receiver
             },
             success: function(response) {
-                console.log(response);
                 updateChat(true)
                 timeout = chatInterval(false)
                 // setTimeout(updateScroll, 500)
             },
             error: (response) => {
-                console.log(response)
             }
         });
     })
@@ -208,7 +204,6 @@
                 }
             },
             error: (response) => {
-                console.log(response)
 
             }
         });
@@ -237,7 +232,7 @@
                     header.empty();
                     header.append("<h4>" + response.contact.name + " " + response.contact.surname + "</h4>")
                     img.empty();
-                    img.append('<img src="' + response.contact.img + '" alt="main" class="img-fluid rounded" />')
+                    img.append('<img src="data:image/jpeg;base64,'  + response.contact.img + '" alt="main" class="img-fluid rounded" />')
                     view.empty();
                     let chats = response.chats;
                     for (var i = 0; i < chats.length; i++) {
@@ -263,7 +258,6 @@
                     updateChat(true)
                 },
                 error: (response) => {
-                    console.log(response)
                 }
             });
         }

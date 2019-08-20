@@ -18,7 +18,8 @@
             <div class="text-center"><img width="80px" height="80px" src="images/profile.png" class="rounded-circle border p-1"></div>
 
             <!-- Sign in -->
-            <form id="singninForm" action="#">
+            <form id="singninForm" action="#">'
+              <span style="color:red" id="errors_login"></span>
               <div class="form-group">
                 <label class="font-weight-bold">Email <span class="text-danger">*</span></label>
                 <input type="email" name="email" id="email" class="form-control" placeholder="Enter valid email">
@@ -27,16 +28,14 @@
                 <label class="font-weight-bold">Password <span class="text-danger">*</span></label>
                 <input type="password" name="password" id="password" class="form-control" placeholder="***********">
               </div>
-              <div class="form-group">
+              <!-- <div class="form-group">
                 <div class="row">
-                  <div class="col">
-                    <label><input type="checkbox" name="condition" id="condition"> Remember me.</label>
-                  </div>
+                  
                   <div class="col text-right">
                     <a href="javascript:;" data-toggle="modal" data-target="#forgotPass">Forgot Password?</a>
                   </div>
                 </div>
-              </div>
+              </div> -->
               <div class="form-group">
                 <input id="singninButton" type="submit" name="submit" value="Sign In" class="btn btn-block btn-dark">
               </div>
@@ -54,6 +53,7 @@
                 <img id="profileImg" onclick="profileUpload()" width="80px" height="80px" src="images/profile.png" class="rounded-circle border p-1">
                 <input id="profileInput" type="file" style="position: fixed; top: -200px">
               </div>
+              <span style="color:red" id="errors_register"></span>
               <div class="form-group">
                 <div class="row">
                   <div class="col">
@@ -164,7 +164,6 @@
   <script>
     $('#singninForm').submit(function(e) {
       e.preventDefault()
-      console.log("po")
       var email = $('#email').val()
       var password = $('#password').val()
       $.ajax({
@@ -179,18 +178,16 @@
           password: password
         },
         success: function(response) {
-          console.log(response);
 
           $.post('helpers/authorization.php', {
-            token: response
+            token_login: response
           }, (e) => {
             if (e)
               window.location.href = "/";
           })
         },
         error: (response) => {
-          console.log(response)
-
+          $("#errors_login").append("Yoour email or password is wrong")
         }
       });
     })
@@ -204,13 +201,16 @@
         var request = new XMLHttpRequest();
         request.onreadystatechange = function() {
           if (this.readyState == 4 && this.status == 200) {
-            console.log(this.response)
             $.post('helpers/authorization.php', {
-              token: this.response
+              token_register: this.response
             }, (e) => {
               if (e)
-                console.log(e)
+                window.location.replace('/')
             })
+          } else if (this.status >= 400){
+            let res = JSON.parse(this.response)
+            $("#errors_register").empty()
+            res.errors.map(e => $("#errors_register").append(e + "</br>"))
           }
         };
 

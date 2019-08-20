@@ -18,15 +18,10 @@ class CORSMiddleware
      */
     public function handle($request, Closure $next)
     {
-        // TODO: Should check whether route has been registered
-        // if ($this->isPreflightRequest($request)) {
-        //     $response = $this->createEmptyResponse();
-        // } else {
-        Log::info("Ckemi cors");    
+        
         $request = $this->addCorsHeaders($request);
         $response = $next($request);
-        // }
-
+        
         return $this->addCorsHeaders($response);
     }
 

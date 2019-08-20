@@ -16,14 +16,15 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
-        for ($i = 0; $i < 100; $i++) {
+        $adminEmail = ['doctor1@mail.com', 'doctor2@mail.com','doctor3@mail.com','doctor4@mail.com'];
+        for ($i = 0; $i < 4; $i++) {
             DB::table('users')->insert([
-                'name' => Str::random(10),
-                'email' => Str::random(5) . '@mail.com',
+                'name' => "Doctor" . ($i + 1),
+                'email' => $adminEmail[$i],
                 'password' => bcrypt('password'),
                 'role_id' => 2,
                 'doctor' => null,
-                'surname' => Str::random(10),
+                'surname' => "Test" . $i,
                 'img' => "nAo34XzMNvzHX7w3wgaR5tKEdXVPlf002kfNMj1s.png",
                 'password' => bcrypt("Aa123456"),
                 'birthday' => Carbon::now(),
@@ -36,14 +37,13 @@ class UsersTableSeeder extends Seeder
                 'updated_at' => Carbon::now(),
             ]);
         }
-
         for ($i = 0; $i < 100; $i++) {
             DB::table('users')->insert([
-                'name' => Str::random(10),
+                'name' => "Patient" . ($i + 1),
                 'email' => Str::random(5) . '@mail.com',
                 'password' => bcrypt('password'),
                 'role_id' => 3,
-                'doctor' => rand(1, 100),
+                'doctor' => rand(1, 4),
                 'surname' => Str::random(10),
                 'img' => "nAo34XzMNvzHX7w3wgaR5tKEdXVPlf002kfNMj1s.png",
                 'password' => bcrypt("Aa123456"),
