@@ -14,7 +14,7 @@ class PDTableSeeder extends Seeder
     {
         for ($i = 0; $i < 100; $i++) {
             DB::table('patient_diseases')->insert([
-                'patient' => rand(5, 104),
+                'patient' => rand(5, 24),
                 'disease' => rand(1, 4),
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),

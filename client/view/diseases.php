@@ -19,7 +19,7 @@
                             <p class="lead">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Necessitatibus
                                 deserunt cum architecto voluptatem laborum qui culpa ad ratione accusamus
                                 exercitationem.</p>
-                            <a href="#" class="btn btn-primary btn-lg">Sign Up now</a>
+                            <a href="login" class="btn btn-primary btn-lg">Sign Up now</a>
                         </div>
                     </div>
                 </div>
@@ -30,7 +30,7 @@
                             <p class="lead">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Necessitatibus
                                 deserunt cum architecto voluptatem laborum qui culpa ad ratione accusamus
                                 exercitationem.</p>
-                            <a href="#" class="btn btn-danger btn-lg">Sign Up now</a>
+                            <a href="login" class="btn btn-danger btn-lg">Sign Up now</a>
                         </div>
                     </div>
                 </div>
@@ -41,7 +41,7 @@
                             <p class="lead">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Necessitatibus
                                 deserunt cum architecto voluptatem laborum qui culpa ad ratione accusamus
                                 exercitationem.</p>
-                            <a href="#" class="btn btn-success btn-lg">Sign Up now</a>
+                            <a href="login" class="btn btn-success btn-lg">Sign Up now</a>
                         </div>
                     </div>
                 </div>

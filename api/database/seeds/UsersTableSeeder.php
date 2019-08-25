@@ -26,7 +26,6 @@ class UsersTableSeeder extends Seeder
                 'doctor' => null,
                 'surname' => "Test" . $i,
                 'img' => "nAo34XzMNvzHX7w3wgaR5tKEdXVPlf002kfNMj1s.png",
-                'password' => bcrypt("Aa123456"),
                 'birthday' => Carbon::now(),
                 'address' => Str::random(10),
                 'city' => Str::random(10),
@@ -37,14 +36,13 @@ class UsersTableSeeder extends Seeder
                 'updated_at' => Carbon::now(),
             ]);
         }
-        for ($i = 0; $i < 100; $i++) {
+        for ($i = 0; $i < 20; $i++) {
             DB::table('users')->insert([
                 'name' => "Patient" . ($i + 1),
-                'email' => Str::random(5) . '@mail.com',
-                'password' => bcrypt('password'),
+                'email' => strtolower(Str::random(5)) . '@mail.com',
                 'role_id' => 3,
                 'doctor' => rand(1, 4),
-                'surname' => Str::random(10),
+                'surname' => "Test" . $i,
                 'img' => "nAo34XzMNvzHX7w3wgaR5tKEdXVPlf002kfNMj1s.png",
                 'password' => bcrypt("Aa123456"),
                 'birthday' => Carbon::now(),
@@ -57,5 +55,7 @@ class UsersTableSeeder extends Seeder
                 'updated_at' => Carbon::now(),
             ]);
         }
+
+        
     }
 }

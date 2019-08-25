@@ -16,7 +16,7 @@ class ChatsTableSeeder extends Seeder
     {
         for ($i = 0; $i < 500; $i++) {
             DB::table('chats')->insert([
-                'sender' => rand(5, 104),
+                'sender' => rand(5, 24),
                 'receiver' => rand(1, 4),
                 'content' => Str::random(20),
             ]);
@@ -24,7 +24,7 @@ class ChatsTableSeeder extends Seeder
         for ($i = 0; $i < 500; $i++) {
             DB::table('chats')->insert([
                 'sender' => rand(1, 4),
-                'receiver' => rand(5, 104),
+                'receiver' => rand(5, 24),
                 'content' => Str::random(20),
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
