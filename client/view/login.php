@@ -167,7 +167,7 @@
       var email = $('#email').val()
       var password = $('#password').val()
       $.ajax({
-        url: 'api.dk-helath.tk' + 'api/auth/login',
+        url: 'api.dk-helath.tk/' + 'api/auth/login',
         type: 'POST',
         beforeSend: function(request) {
           request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");

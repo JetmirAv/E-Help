@@ -383,7 +383,7 @@ if (!isset(($_SESSION['token']))) {
             $("#receiptShowModalContent").empty()
             $("#diseaseTitleReceipt").empty();
             $.ajax({
-                url: 'api.dk-helath.tk' + 'api/patient/see_receipts',
+                url: 'api.dk-helath.tk/' + 'api/patient/see_receipts',
                 type: 'POST',
                 beforeSend: function(request) {
                     request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -433,7 +433,7 @@ if (!isset(($_SESSION['token']))) {
         $("#add_disease_to_patient").on('click', e => {
 
             $.ajax({
-                url: 'api.dk-helath.tk' + 'api/doctor/get_diseases',
+                url: 'api.dk-helath.tk/' + 'api/doctor/get_diseases',
                 type: 'GET',
                 beforeSend: function(request) {
                     request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -460,7 +460,7 @@ if (!isset(($_SESSION['token']))) {
 
         $("#add_doctors_to_patient").on('click', e => {
             $.ajax({
-                url: 'api.dk-helath.tk' + 'api/patient/get_patient_doctors',
+                url: 'api.dk-helath.tk/' + 'api/patient/get_patient_doctors',
                 type: 'GET',
                 beforeSend: function(request) {
                     request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -488,7 +488,7 @@ if (!isset(($_SESSION['token']))) {
 
         $("#save-disease-for-patient").on('click', e => {
             $.ajax({
-                url: 'api.dk-helath.tk' + 'api/doctor/add_disease_to_patient',
+                url: 'api.dk-helath.tk/' + 'api/doctor/add_disease_to_patient',
                 type: 'POST',
                 beforeSend: function(request) {
                     request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -513,7 +513,7 @@ if (!isset(($_SESSION['token']))) {
 
         $("#save-doctor-for-patient").on('click', e => {
             $.ajax({
-                url: 'api.dk-helath.tk' + 'api/patient/add_doctor_to_patient',
+                url: 'api.dk-helath.tk/' + 'api/patient/add_doctor_to_patient',
                 type: 'POST',
                 beforeSend: function(request) {
                     request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -539,7 +539,7 @@ if (!isset(($_SESSION['token']))) {
         $("#add-receipt").on('click', e => {
             e.preventDefault()
             $.ajax({
-                url: 'api.dk-helath.tk' + 'api/doctor/add_receipt',
+                url: 'api.dk-helath.tk/' + 'api/doctor/add_receipt',
                 type: 'POST',
                 beforeSend: function(request) {
                     request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");

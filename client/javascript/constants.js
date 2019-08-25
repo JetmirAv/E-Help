@@ -1,1 +1,1 @@
-export const baseUrl = 'api.dk-helath.tk';
+export const baseUrl = 'api.dk-helath.tk/';
