@@ -138,7 +138,7 @@
         var content = $('#message_content').val()
         $('#message_content').val('');
         $.ajax({
-            url: 'api.dk-helath.tk/' + 'api/chat',
+            url: 'http://www.api.dk-helath.tk/' + 'api/chat',
             type: 'POST',
             beforeSend: function(request) {
                 request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -162,7 +162,7 @@
 
     function updateChat(param) {
         $.ajax({
-            url: 'api.dk-helath.tk/' + 'api/chat/refresh',
+            url: 'http://www.api.dk-helath.tk/' + 'api/chat/refresh',
             type: 'POST',
             beforeSend: function(request) {
                 request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -213,7 +213,7 @@
     function changeContact(id) {
         if (parseInt(id)) {
             $.ajax({
-                url: 'api.dk-helath.tk/' + 'api/chat/change_contact',
+                url: 'http://www.api.dk-helath.tk/' + 'api/chat/change_contact',
                 type: 'POST',
                 beforeSend: function(request) {
                     request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");

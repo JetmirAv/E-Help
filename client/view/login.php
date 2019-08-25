@@ -167,7 +167,7 @@
       var email = $('#email').val()
       var password = $('#password').val()
       $.ajax({
-        url: 'api.dk-helath.tk/' + 'api/auth/login',
+        url: 'http://www.api.dk-helath.tk/' + 'api/auth/login',
         type: 'POST',
         beforeSend: function(request) {
           request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -214,7 +214,7 @@
           }
         };
 
-        request.open('post', 'http://api.dk-helath.tk/api/auth/register')
+        request.open('post', 'http://http://www.api.dk-helath.tk/api/auth/register')
 
         var form = new FormData();
         form.append("email", $("#signupEmail").val());
