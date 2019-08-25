@@ -187,6 +187,7 @@
           })
         },
         error: (response) => {
+          $("#errors_login").empty()
           $("#errors_login").append("Yoour email or password is wrong")
         }
       });
