@@ -1,11 +1,11 @@
 <!-- // @codingStandardsIgnoreStart -->
 <!DOCTYPE html>
 <html lang="en">
-<?php require_once '.\\components\\head.php'  ?>
+<?php include_once './components/head.php'  ?>
 
 
 <body class="bg-light">
-    <?php require_once '.\\components\\nav.php' ?>
+    <?php include_once './components/nav.php' ?>
     <div class="hero-image">
         <div class="hero-text">
             <h1>E - Health</h1>
@@ -72,7 +72,7 @@
             </div>
         </div>
     </div>
-    <?php require_once '.\\components\\footer.php' ?>
+    <?php include_once './components/footer.php' ?>
 
 </body>
 
