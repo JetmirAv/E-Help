@@ -1,7 +1,7 @@
 <?php
 $router->define([
     '' => 'controllers/static/home.php',
-    '/' => 'controllers/static/home.php',
+    // '/' => 'controllers/static/home.php',
     '/index' => 'controllers/static/home.php',
     '/about' => 'controllers/static/about.php',
     '/profile' => 'controllers/me.php',

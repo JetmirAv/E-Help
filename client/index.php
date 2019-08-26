@@ -14,5 +14,9 @@ $router = Router::load('core/Routes.php');
 
 $uri = rtrim($_SERVER['REQUEST_URI'], '/');
 
+echo "Route";
+echo "<br>";
+print_r($uri);
+echo "<br>";
 
 require $router->direct($uri);
