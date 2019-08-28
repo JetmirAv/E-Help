@@ -184,15 +184,15 @@
           let resArr = Object.entries(response)
           console.log(resArr)
 
-          resArr.map(e => localStorage.setItem(e[0], e[1]))
-          window.location.href = "/";
+          // resArr.map(e => localStorage.setItem(e[0], e[1]))
+          // window.location.href = "/";
           
-          // $.post('helpers/authorization.php', {
-          //   token_login: response
-          // }, (e) => {
-          //   if (e)
-          //     window.location.href = "/";
-          // })
+          $.post('helpers/authorization.php', {
+            token_login: response
+          }, (e) => {
+            if (e)
+              window.location.href = "/";
+          })
         },
         error: (response) => {
           $("#errors_login").empty()
