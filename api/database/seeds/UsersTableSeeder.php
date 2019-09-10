@@ -39,7 +39,7 @@ class UsersTableSeeder extends Seeder
         for ($i = 0; $i < 20; $i++) {
             DB::table('users')->insert([
                 'name' => "Patient" . ($i + 1),
-                'email' => strtolower(Str::random(5)) . '@mail.com',
+                'email' => patient . $i . '@mail.com',
                 'role_id' => 3,
                 'doctor' => rand(1, 4),
                 'surname' => "Test" . $i,
